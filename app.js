@@ -1,12 +1,19 @@
 const express = require("express");
+const pool = require("./src/config/db");
 
 const app = express();
 
-app.get("/", (req, res) => {
-    res.send("Fotaza 2 funcionando 🚀");
+app.get("/", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT NOW()");
+        res.send(`PostgreSQL conectado  ${result.rows[0].now}`);
+    } catch (error) {
+        console.error(error);
+        res.send("Error conectando a PostgreSQL");
+    }
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);
