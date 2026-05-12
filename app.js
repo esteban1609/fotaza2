@@ -1,19 +1,30 @@
 const express = require("express");
-const pool = require("./src/config/db");
+const sequelize = require("./src/config/sequelize");
+const authRoutes = require("./src/routes/auth.routes");
 
 const app = express();
+app.set("view engine", "pug");
+app.set("views", "./src/views");
 
-app.get("/", async (req, res) => {
-    try {
-        const result = await pool.query("SELECT NOW()");
-        res.send(`PostgreSQL conectado  ${result.rows[0].now}`);
-    } catch (error) {
-        console.error(error);
-        res.send("Error conectando a PostgreSQL");
-    }
-});
+app.use(express.urlencoded({ extended: true }));
+
+
 
 const PORT = process.env.PORT || 3000;
+
+app.use("/", authRoutes);
+
+sequelize.sync()
+    .then(() => {
+        console.log("Base de datos sincronizada ");
+
+        app.listen(PORT, () => {
+            console.log(`Servidor corriendo en puerto ${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.error("Error conectando BD:", error);
+    });
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);
