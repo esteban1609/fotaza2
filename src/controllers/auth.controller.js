@@ -40,8 +40,47 @@ const register = async (req, res) => {
     }
 };
 
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({
+            where: {
+                email
+            }
+        });
+
+        if (!user) {
+            return res.send("Usuario no encontrado");
+        }
+
+        const validPassword = await bcrypt.compare(
+            password,
+            user.password_hash
+        );
+
+        if (!validPassword) {
+            return res.send("Contraseña incorrecta");
+        }
+
+        req.session.user = {
+            id: user.id,
+            username: user.username,
+            email: user.email
+        };
+
+        res.send("Login correcto");
+
+    } catch (error) {
+        console.error(error);
+
+        res.send("Error en login");
+    }
+};
+
 module.exports = {
     showRegister,
     showLogin,
-    register
+    register,
+    login
 };

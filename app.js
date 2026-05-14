@@ -1,12 +1,28 @@
 const express = require("express");
 const sequelize = require("./src/config/sequelize");
 const authRoutes = require("./src/routes/auth.routes");
+const session = require("express-session");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+
+const sessionStore = new SequelizeStore({
+    db: sequelize
+});
 
 const app = express();
 app.set("view engine", "pug");
 app.set("views", "./src/views");
 
 app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+    secret: "secreto_super_seguro",
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}));
 
 
 
@@ -25,6 +41,8 @@ sequelize.sync()
     .catch((error) => {
         console.error("Error conectando BD:", error);
     });
+
+sessionStore.sync();
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);
