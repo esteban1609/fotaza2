@@ -69,7 +69,7 @@ const login = async (req, res) => {
             email: user.email
         };
 
-        res.send("Login correcto");
+        res.redirect("/dashboard");
 
     } catch (error) {
         console.error(error);

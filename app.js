@@ -3,6 +3,7 @@ const sequelize = require("./src/config/sequelize");
 const authRoutes = require("./src/routes/auth.routes");
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const dashboardRoutes = require("./src/routes/dashboard.routes");
 
 const sessionStore = new SequelizeStore({
     db: sequelize
@@ -42,7 +43,8 @@ sequelize.sync()
         console.error("Error conectando BD:", error);
     });
 
-sessionStore.sync();
+app.use("/", dashboardRoutes);
+
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);
