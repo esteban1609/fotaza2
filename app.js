@@ -4,6 +4,7 @@ const authRoutes = require("./src/routes/auth.routes");
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const dashboardRoutes = require("./src/routes/dashboard.routes");
+const postRoutes = require("./src/routes/post.routes");
 
 const sessionStore = new SequelizeStore({
     db: sequelize
@@ -14,6 +15,8 @@ app.set("view engine", "pug");
 app.set("views", "./src/views");
 
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/uploads", express.static("uploads"));
 
 app.use(session({
     secret: "secreto_super_seguro",
@@ -44,6 +47,8 @@ sequelize.sync()
     });
 
 app.use("/", dashboardRoutes);
+
+app.use("/", postRoutes);
 
 
 app.listen(PORT, () => {

@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title Crear publicación
+
+  body
+
+    h1 Nueva publicación
+
+    form(
+      action="/posts/create"
+      method="POST"
+      enctype="multipart/form-data"
+    )
+
+      div
+        label Título
+        input(type="text" name="title")
+
+      div
+        label Descripción
+        textarea(name="description")
+
+      div
+        label Imagen
+        input(type="file" name="image")
+
+      button(type="submit") Publicar
