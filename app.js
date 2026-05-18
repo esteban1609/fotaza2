@@ -5,6 +5,7 @@ const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const dashboardRoutes = require("./src/routes/dashboard.routes");
 const postRoutes = require("./src/routes/post.routes");
+const feedRoutes = require("./src/routes/feed.routes");
 
 const sessionStore = new SequelizeStore({
     db: sequelize
@@ -48,7 +49,9 @@ sequelize.sync()
 
 app.use("/", dashboardRoutes);
 
-app.use("/", postRoutes);
+app.use("/", postRoutes);    
+
+app.use("/", feedRoutes);
 
 
 app.listen(PORT, () => {
