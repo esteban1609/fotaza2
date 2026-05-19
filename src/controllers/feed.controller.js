@@ -1,6 +1,6 @@
 const Post = require("../models/Post");
-
 const User = require("../models/User");
+const Comment = require("../models/Comment");
 
 const feed = async (req, res) => {
 
@@ -8,7 +8,13 @@ const feed = async (req, res) => {
 
         const posts = await Post.findAll({
 
-            include: User,
+            include: [
+    User,
+    {
+        model: Comment,
+        include: User
+    }
+],
 
             order: [
                 ["createdAt", "DESC"]

@@ -21,3 +21,29 @@ html
         src=`/uploads/${post.image}`
         width="300"
       )
+
+      h3 Comentarios
+
+      each comment in post.Comments
+
+        p
+          strong #{comment.User.username}:
+          |  #{comment.content}
+
+      form(
+        action=`/comments/create/${post.id}`
+        method="POST"
+      )
+
+        textarea(
+          name="content"
+          placeholder="Escribí un comentario"
+        )
+
+        br
+
+        button(type="submit")
+          | Comenta
+
+  
+
