@@ -7,6 +7,7 @@ const dashboardRoutes = require("./src/routes/dashboard.routes");
 const postRoutes = require("./src/routes/post.routes");
 const feedRoutes = require("./src/routes/feed.routes");
 const commentRoutes = require("./src/routes/comment.routes");
+const ratingRoutes = require("./src/routes/rating.routes");
 
 const sessionStore = new SequelizeStore({
     db: sequelize
@@ -16,7 +17,14 @@ const app = express();
 app.set("view engine", "pug");
 app.set("views", "./src/views");
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({
+    limit: "50mb"
+}));
+
+app.use(express.urlencoded({
+    extended: true,
+    limit: "50mb"
+}));
 
 app.use("/uploads", express.static("uploads"));
 
@@ -55,6 +63,8 @@ app.use("/", postRoutes);
 app.use("/", feedRoutes);
 
 app.use("/", commentRoutes);
+
+app.use("/", ratingRoutes);
 
 
 app.listen(PORT, () => {

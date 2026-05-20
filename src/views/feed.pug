@@ -17,8 +17,21 @@ html
 
       p Autor: #{post.User.username}
 
+      - let average = 0
+
+      if post.Ratings.length > 0
+
+        - let total = 0
+
+        each rating in post.Ratings
+          - total += rating.value
+
+        - average = (total / post.Ratings.length).toFixed(1)
+
+      p Valoración promedio: #{average} ⭐
+
       img(
-        src=`/uploads/${post.image}`
+        src=post.image
         width="300"
       )
 
@@ -43,7 +56,23 @@ html
         br
 
         button(type="submit")
-          | Comenta
+          | Comentar
 
-  
+      br
+
+      form(
+        action=`/ratings/create/${post.id}`
+        method="POST"
+      )
+
+        select(name="value")
+
+          option(value="1") 1 estrella
+          option(value="2") 2 estrellas
+          option(value="3") 3 estrellas
+          option(value="4") 4 estrellas
+          option(value="5") 5 estrellas
+
+        button(type="submit")
+          | Valorar
 

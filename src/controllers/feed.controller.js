@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Comment = require("../models/Comment");
+const Rating = require("../models/Rating");
 
 const feed = async (req, res) => {
 
@@ -13,6 +14,9 @@ const feed = async (req, res) => {
     {
         model: Comment,
         include: User
+    },
+    {
+        model: Rating
     }
 ],
 

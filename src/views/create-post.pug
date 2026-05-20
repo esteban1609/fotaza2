@@ -10,12 +10,14 @@ html
     form(
       action="/posts/create"
       method="POST"
-      enctype="multipart/form-data"
     )
 
       div
         label Título
-        input(type="text" name="title")
+        input(
+          type="text"
+          name="title"
+        )
 
       div
         label Descripción
@@ -23,6 +25,130 @@ html
 
       div
         label Imagen
-        input(type="file" name="image")
+        input(
+          type="file"
+          id="imageInput"
+          accept="image/*"
+        )
 
-      button(type="submit") Publicar
+      input(
+        type="hidden"
+        name="image"
+        id="imageBase64"
+      )
+
+      br
+
+      img(
+        id="preview"
+        width="300"
+      )
+
+      br
+
+      button(type="submit")
+        | Publicar
+
+    script.
+
+      const form =
+        document.querySelector("form");
+
+      const imageInput =
+        document.getElementById("imageInput");
+
+      const imageBase64 =
+        document.getElementById("imageBase64");
+
+      const preview =
+        document.getElementById("preview");
+
+      let imageReady = false;
+
+      imageInput.addEventListener(
+        "change",
+        (event) => {
+
+          imageReady = false;
+
+          const file =
+            event.target.files[0];
+
+          if (!file) return;
+
+          const reader =
+            new FileReader();
+
+          reader.onload = (e) => {
+
+            const image =
+              new Image();
+
+            image.src =
+              e.target.result;
+
+            image.onload = () => {
+
+              const canvas =
+                document.createElement("canvas");
+
+              const ctx =
+                canvas.getContext("2d");
+
+              const MAX_WIDTH = 800;
+
+              let width = image.width;
+              let height = image.height;
+
+              if (width > MAX_WIDTH) {
+
+                height *= MAX_WIDTH / width;
+
+                width = MAX_WIDTH;
+              }
+
+              canvas.width = width;
+              canvas.height = height;
+
+              ctx.drawImage(
+                image,
+                0,
+                0,
+                width,
+                height
+              );
+
+              const compressed =
+                canvas.toDataURL(
+                  "image/jpeg",
+                  0.7
+                );
+
+              imageBase64.value =
+                compressed;
+
+              preview.src =
+                compressed;
+
+              imageReady = true;
+            };
+          };
+
+          reader.readAsDataURL(file);
+        }
+      );
+
+      form.addEventListener(
+        "submit",
+        (event) => {
+
+          if (!imageReady) {
+
+            event.preventDefault();
+
+            alert(
+              "Esperá que la imagen termine de procesarse"
+            );
+          }
+        }
+      );

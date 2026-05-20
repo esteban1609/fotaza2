@@ -11,7 +11,7 @@ const createPost = async (req, res) => {
 
         const { title, description } = req.body;
 
-        const image = req.file.filename;
+        const { image } = req.body;
 
         await Post.create({
 

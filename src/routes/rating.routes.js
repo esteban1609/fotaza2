@@ -2,27 +2,18 @@ const express = require("express");
 
 const router = express.Router();
 
-
-
 const {
-    showCreatePost,
-    createPost
-} = require("../controllers/post.controller");
+    createRating
+} = require("../controllers/rating.controller");
 
 const {
     isAuthenticated
 } = require("../middlewares/auth.middleware");
 
-router.get(
-    "/posts/create",
-    isAuthenticated,
-    showCreatePost
-);
-
 router.post(
-    "/posts/create",
+    "/ratings/create/:postId",
     isAuthenticated,
-    createPost
+    createRating
 );
 
 module.exports = router;
