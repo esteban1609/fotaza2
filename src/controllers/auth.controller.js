@@ -69,7 +69,7 @@ const login = async (req, res) => {
             email: user.email
         };
 
-        res.redirect("/dashboard");
+        res.redirect("/");
 
     } catch (error) {
         console.error(error);
@@ -77,10 +77,18 @@ const login = async (req, res) => {
         res.send("Error en login");
     }
 };
+const logout = (req, res) => {
+
+    req.session.destroy(() => {
+
+        res.redirect("/login");
+    });
+};
 
 module.exports = {
     showRegister,
     showLogin,
     register,
-    login
+    login,
+    logout
 };

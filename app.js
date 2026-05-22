@@ -8,6 +8,16 @@ const postRoutes = require("./src/routes/post.routes");
 const feedRoutes = require("./src/routes/feed.routes");
 const commentRoutes = require("./src/routes/comment.routes");
 const ratingRoutes = require("./src/routes/rating.routes");
+const followRoutes = require("./src/routes/follow.routes");
+require("./src/models/User");
+
+require("./src/models/Post");
+
+require("./src/models/Comment");
+
+require("./src/models/Rating");
+
+require("./src/models/Follow");
 
 const sessionStore = new SequelizeStore({
     db: sequelize
@@ -66,7 +76,6 @@ app.use("/", commentRoutes);
 
 app.use("/", ratingRoutes);
 
+app.use("/", followRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en puerto ${PORT}`);
-});
+

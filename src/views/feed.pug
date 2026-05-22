@@ -5,6 +5,8 @@ html
 
   body
 
+    include navbar 
+
     h1 Feed de publicaciones
 
     each post in posts
@@ -17,6 +19,15 @@ html
 
       p Autor: #{post.User.username}
 
+      if post.User.id !== currentUser.id
+
+        form(
+          action=`/follow/${post.User.id}`
+          method="POST"
+          )
+          button(type="submit")
+          | Seguir
+      
       - let average = 0
 
       if post.Ratings.length > 0

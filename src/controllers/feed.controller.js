@@ -26,7 +26,8 @@ const feed = async (req, res) => {
         });
 
         res.render("feed", {
-            posts
+            posts,
+            currentUser: req.session.user
         });
 
     } catch (error) {

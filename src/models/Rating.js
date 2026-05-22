@@ -9,7 +9,7 @@ const Post = require("./Post");
 const Rating = sequelize.define("Rating", {
     id:{
         type: DataTypes.INTEGER,
-        autoincrement: true,
+        autoIncrement: true,
         primaryKey: true
     },
 
@@ -26,16 +26,21 @@ const Rating = sequelize.define("Rating", {
     tableName: "ratings",
     timestamps: true
 });
+
 User.hasMany(Rating)
 
+
 Rating.belongsTo(User,{
-    foreingKey: "UserId"
+    foreignKey: "UserId"
 });
+
 
 Post.hasMany(Rating)
 
+
 Rating.belongsTo(Post,{
-    foreingKey: "PostId"
+    foreignKey: "PostId"
 });
+
 
 module.exports = Rating;
