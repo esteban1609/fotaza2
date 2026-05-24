@@ -36,6 +36,8 @@ app.use(express.urlencoded({
     limit: "50mb"
 }));
 
+app.use(express.static("./src/public"));
+
 app.use("/uploads", express.static("uploads"));
 
 app.use(session({

@@ -1,17 +1,51 @@
-doctype html
-html
-  head
-    title Login
-  body
-    h1 Iniciar sesión
+extends layout
 
-    form(action="/login" method="POST")
-      div
-        label Email
-        input(type="email" name="email")
+block content
 
-      div
-        label Password
-        input(type="password" name="password")
+  .row.justify-content-center
 
-      button(type="submit") Ingresar
+    .col-md-6.col-lg-4
+
+      .card.shadow-sm.border-0
+
+        .card-body.p-4
+
+          h1.text-center.mb-4
+            | Iniciar sesión
+
+          form(
+            action="/login"
+            method="POST"
+          )
+
+            .mb-3
+
+              label.form-label
+                | Email
+
+              input.form-control(
+                type="email"
+                name="email"
+                required
+              )
+
+            .mb-3
+
+              label.form-label
+                | Contraseña
+
+              input.form-control(
+                type="password"
+                name="password"
+                required
+              )
+
+            button.btn.btn-dark.w-100(
+              type="submit"
+            )
+              | Ingresar
+
+          p.text-center.mt-3
+
+            a(href="/register")
+              | Crear cuenta

@@ -1,0 +1,19 @@
+body{
+    background-color: #f4f4f4;
+}
+
+.feed-card{
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.feed-image{
+    max-height: 500px;
+    width: 100%;
+    object-fit: contain;
+    
+}
+
+.navbar-brand{
+    font-weight: bold;
+}

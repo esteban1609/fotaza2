@@ -1,14 +1,34 @@
-nav
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow-sm
 
-  a(href="/")
-    | Feed
+  .container
 
-  |  -
+    a.navbar-brand(href="/")
+      | Fotaza
 
-  a(href="/posts/create")
-    | Crear publicación
+    button.navbar-toggler(
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    )
 
-  |  -
+      span.navbar-toggler-icon
 
-  a(href="/logout")
-    | Logout
+    .collapse.navbar-collapse#navbarNav
+
+      ul.navbar-nav.ms-auto
+
+        li.nav-item
+          a.nav-link(href="/")
+            | Feed
+
+        li.nav-item
+          a.nav-link(href="/dashboard")
+            | Dashboard
+
+        li.nav-item
+          a.nav-link(href="/posts/create")
+            | Crear publicación
+
+        li.nav-item
+          a.nav-link.text-danger(href="/logout")
+            | Logout

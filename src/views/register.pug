@@ -1,21 +1,62 @@
-doctype html
-html
-  head
-    title Registro
-  body
-    h1 Registro de usuario
+extends layout
 
-    form(action="/register" method="POST")
-      div
-        label Username
-        input(type="text" name="username")
+block content
 
-      div
-        label Email
-        input(type="email" name="email")
+  .row.justify-content-center
 
-      div
-        label Password
-        input(type="password" name="password")
+    .col-md-6.col-lg-4
 
-      button(type="submit") Registrarse
+      .card.shadow-sm.border-0
+
+        .card-body.p-4
+
+          h1.text-center.mb-4
+            | Crear cuenta
+
+          form(
+            action="/register"
+            method="POST"
+          )
+
+            .mb-3
+
+              label.form-label
+                | Usuario
+
+              input.form-control(
+                type="text"
+                name="username"
+                required
+              )
+
+            .mb-3
+
+              label.form-label
+                | Email
+
+              input.form-control(
+                type="email"
+                name="email"
+                required
+              )
+
+            .mb-3
+
+              label.form-label
+                | Contraseña
+
+              input.form-control(
+                type="password"
+                name="password"
+                required
+              )
+
+            button.btn.btn-primary.w-100(
+              type="submit"
+            )
+              | Registrarse
+
+          p.text-center.mt-3
+
+            a(href="/login")
+              | Ya tengo cuenta

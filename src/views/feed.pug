@@ -1,89 +1,90 @@
-doctype html
-html
-  head
-    title Feed
+extends layout
 
-  body
 
-    include navbar 
+block content
 
-    h1 Feed de publicaciones
+  h1.mb-4 Feed de publicaciones
 
-    each post in posts
+  each post in posts
 
-      hr
+    .card.feed-card.mb-4.shadow-sm
 
-      h2= post.title
+      .card-body
 
-      p= post.description
+        h2.card-title= post.title
 
-      p Autor: #{post.User.username}
+        p.card-text= post.description
 
-      if post.User.id !== currentUser.id
+        p.text-muted
+          | Autor: #{post.User.username}
+
+        if post.User.id !== currentUser.id
+
+          form(
+            action=`/follow/${post.User.id}`
+            method="POST"
+            class="mb-3"
+          )
+
+            button.btn.btn-primary(type="submit")
+              | Seguir
+
+        - let average = 0
+
+        if post.Ratings.length > 0
+
+          - let total = 0
+
+          each rating in post.Ratings
+            - total += rating.value
+
+          - average = (total / post.Ratings.length).toFixed(1)
+
+        p.fw-bold
+          | Valoración promedio: #{average} ⭐
+
+        img.feed-image.rounded.mt-3.mb-3(
+          src=post.image
+        )
+
+        h3 Comentarios
+
+        each comment in post.Comments
+
+          p
+            strong #{comment.User.username}:
+            |  #{comment.content}
 
         form(
-          action=`/follow/${post.User.id}`
+          action=`/comments/create/${post.id}`
           method="POST"
-          )
-          button(type="submit")
-          | Seguir
-      
-      - let average = 0
-
-      if post.Ratings.length > 0
-
-        - let total = 0
-
-        each rating in post.Ratings
-          - total += rating.value
-
-        - average = (total / post.Ratings.length).toFixed(1)
-
-      p Valoración promedio: #{average} ⭐
-
-      img(
-        src=post.image
-        width="300"
-      )
-
-      h3 Comentarios
-
-      each comment in post.Comments
-
-        p
-          strong #{comment.User.username}:
-          |  #{comment.content}
-
-      form(
-        action=`/comments/create/${post.id}`
-        method="POST"
-      )
-
-        textarea(
-          name="content"
-          placeholder="Escribí un comentario"
+          class="mt-3"
         )
+
+          textarea.form-control.mb-2(
+            name="content"
+            placeholder="Escribí un comentario"
+            rows="3"
+          )
+
+          button.btn.btn-success(type="submit")
+            | Comentar
 
         br
 
-        button(type="submit")
-          | Comentar
+        form(
+          action=`/ratings/create/${post.id}`
+          method="POST"
+          class="mt-2"
+        )
 
-      br
+          select.form-select.mb-2(name="value")
 
-      form(
-        action=`/ratings/create/${post.id}`
-        method="POST"
-      )
+            option(value="1") 1 estrella
+            option(value="2") 2 estrellas
+            option(value="3") 3 estrellas
+            option(value="4") 4 estrellas
+            option(value="5") 5 estrellas
 
-        select(name="value")
-
-          option(value="1") 1 estrella
-          option(value="2") 2 estrellas
-          option(value="3") 3 estrellas
-          option(value="4") 4 estrellas
-          option(value="5") 5 estrellas
-
-        button(type="submit")
-          | Valorar
-
+          button.btn.btn-warning(type="submit")
+            | Valorar
