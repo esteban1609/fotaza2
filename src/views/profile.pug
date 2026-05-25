@@ -1,0 +1,47 @@
+extends layout
+
+block content
+
+  .card.shadow-sm.border-0.mb-4
+
+    .card-body.text-center
+
+      h1.mb-2
+        = profileUser.username
+
+      p.text-muted
+        = profileUser.email
+
+      .d-flex.justify-content-center.gap-4.mt-3
+
+        div
+          h4.mb-0= posts.length
+          small Publicaciones
+
+        div
+          h4.mb-0= followers
+          small Seguidores
+
+        div
+          h4.mb-0= following
+          small Siguiendo
+
+  h2.mb-4 Publicaciones
+
+  .row
+
+    each post in posts
+
+      .col-md-6.col-lg-4.mb-4
+
+        .card.feed-card.shadow-sm.border-0.h-100
+
+          img.feed-image(
+            src=post.image
+          )
+
+          .card-body
+
+            h5.card-title= post.title
+
+            p.card-text= post.description

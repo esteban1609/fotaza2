@@ -1,11 +1,50 @@
-doctype html
-html
-  head
-    title Dashboard
+extends layout
 
-  body
-    h1 Dashboard
+block content
 
-    h2 Bienvenido #{user.username}
+  .d-flex.justify-content-between.align-items-center.mb-4
 
-    p Email: #{user.email}
+    div
+
+      h1.mb-1
+        | Dashboard
+
+      p.text-muted.mb-0
+        | Bienvenido #{user.username}
+
+    a.btn.btn-primary(
+      href="/posts/create"
+    )
+      | Nueva publicación
+
+  if posts.length === 0
+
+    .alert.alert-secondary.text-center
+
+      h4
+        | Todavía no tenés publicaciones
+
+  else
+
+    .row
+
+      each post in posts
+
+        .col-md-6.col-lg-4.mb-4
+
+          .card.h-100.shadow-sm.border-0.feed-card
+
+            img.feed-image(
+              src=post.image
+            )
+
+            .card-body.d-flex.flex-column
+
+              h5.card-title= post.title
+
+              p.card-text= post.description
+
+              .mt-auto
+
+                p.text-muted.small
+                  | Publicación ##{post.id}

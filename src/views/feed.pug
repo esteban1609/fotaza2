@@ -16,7 +16,12 @@ block content
         p.card-text= post.description
 
         p.text-muted
-          | Autor: #{post.User.username}
+          | Autor: 
+          a(
+             href=`/users/${post.User.id}`
+          )
+            = post.User.username
+          
 
         if post.User.id !== currentUser.id
 

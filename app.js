@@ -9,6 +9,7 @@ const feedRoutes = require("./src/routes/feed.routes");
 const commentRoutes = require("./src/routes/comment.routes");
 const ratingRoutes = require("./src/routes/rating.routes");
 const followRoutes = require("./src/routes/follow.routes");
+const userRoutes = require("./src/routes/user.routes");
 require("./src/models/User");
 
 require("./src/models/Post");
@@ -79,5 +80,7 @@ app.use("/", commentRoutes);
 app.use("/", ratingRoutes);
 
 app.use("/", followRoutes);
+
+app.use("/", userRoutes);
 
 

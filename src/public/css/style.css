@@ -17,3 +17,19 @@ body{
 .navbar-brand{
     font-weight: bold;
 }
+
+.card{
+    border-radius: 20px;
+}
+
+textarea{
+    resize: none;
+}
+
+.feed-card{
+    transition: 0.2s ease;
+}
+
+.feed-card:hover{
+    transform: translateY(-5px);
+}

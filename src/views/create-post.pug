@@ -1,156 +1,98 @@
-doctype html
-html
-  head
-    title Crear publicación
+extends layout
 
-  body
+block content
 
-    include navbar 
+  .row.justify-content-center
 
-    h1 Nueva publicación
+    .col-lg-8
 
-    form(
-      action="/posts/create"
-      method="POST"
-    )
+      .card.shadow-sm.border-0
 
-      div
-        label Título
-        input(
-          type="text"
-          name="title"
-        )
+        .card-body.p-4
 
-      div
-        label Descripción
-        textarea(name="description")
+          h1.mb-4.text-center
+            | Crear publicación
 
-      div
-        label Imagen
-        input(
-          type="file"
-          id="imageInput"
-          accept="image/*"
-        )
+          form(
+            action="/posts/create"
+            method="POST"
+          )
 
-      input(
-        type="hidden"
-        name="image"
-        id="imageBase64"
-      )
+            .mb-3
 
-      br
+              label.form-label
+                | Título
 
-      img(
-        id="preview"
-        width="300"
-      )
+              input.form-control(
+                type="text"
+                name="title"
+                required
+              )
 
-      br
+            .mb-3
 
-      button(type="submit")
-        | Publicar
+              label.form-label
+                | Descripción
 
-    script.
+              textarea.form-control(
+                name="description"
+                rows="4"
+                required
+              )
 
-      const form =
-        document.querySelector("form");
+            .mb-3
 
-      const imageInput =
-        document.getElementById("imageInput");
+              label.form-label
+                | Imagen
 
-      const imageBase64 =
-        document.getElementById("imageBase64");
+              input.form-control(
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                required
+              )
 
-      const preview =
-        document.getElementById("preview");
+              input(
+                type="hidden"
+                name="image"
+                id="imageBase64"
+              )
 
-      let imageReady = false;
+            .mb-3.text-center
 
-      imageInput.addEventListener(
-        "change",
-        (event) => {
+              img#previewImage.img-fluid.rounded.shadow-sm(
+                style="max-height: 400px; display:none;"
+              )
 
-          imageReady = false;
+            button.btn.btn-primary.w-100(
+              type="submit"
+            )
+              | Publicar
 
-          const file =
-            event.target.files[0];
+  script.
 
-          if (!file) return;
+    const imageInput = document.getElementById("imageInput");
 
-          const reader =
-            new FileReader();
+    const imageBase64 = document.getElementById("imageBase64");
 
-          reader.onload = (e) => {
+    const previewImage = document.getElementById("previewImage");
 
-            const image =
-              new Image();
+    imageInput.addEventListener("change", (event) => {
 
-            image.src =
-              e.target.result;
+      const file = event.target.files[0];
 
-            image.onload = () => {
+      if (!file) return;
 
-              const canvas =
-                document.createElement("canvas");
+      const reader = new FileReader();
 
-              const ctx =
-                canvas.getContext("2d");
+      reader.onload = function(e){
 
-              const MAX_WIDTH = 800;
+        imageBase64.value = e.target.result;
 
-              let width = image.width;
-              let height = image.height;
+        previewImage.src = e.target.result;
 
-              if (width > MAX_WIDTH) {
+        previewImage.style.display = "block";
+      };
 
-                height *= MAX_WIDTH / width;
-
-                width = MAX_WIDTH;
-              }
-
-              canvas.width = width;
-              canvas.height = height;
-
-              ctx.drawImage(
-                image,
-                0,
-                0,
-                width,
-                height
-              );
-
-              const compressed =
-                canvas.toDataURL(
-                  "image/jpeg",
-                  0.7
-                );
-
-              imageBase64.value =
-                compressed;
-
-              preview.src =
-                compressed;
-
-              imageReady = true;
-            };
-          };
-
-          reader.readAsDataURL(file);
-        }
-      );
-
-      form.addEventListener(
-        "submit",
-        (event) => {
-
-          if (!imageReady) {
-
-            event.preventDefault();
-
-            alert(
-              "Esperá que la imagen termine de procesarse"
-            );
-          }
-        }
-      );
+      reader.readAsDataURL(file);
+    });
