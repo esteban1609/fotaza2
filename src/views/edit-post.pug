@@ -1,0 +1,51 @@
+extends layout
+
+block content
+
+  .row.justify-content-center
+
+    .col-lg-8
+
+      .card.shadow-sm.border-0
+
+        .card-body.p-4
+
+          h1.mb-4.text-center
+            | Editar publicación
+
+          form(
+            action=`/posts/edit/${post.id}`
+            method="POST"
+          )
+
+            .mb-3
+
+              label.form-label
+                | Título
+
+              input.form-control(
+                type="text"
+                name="title"
+                value=post.title
+                required
+              )
+
+            .mb-3
+
+              label.form-label
+                | Descripción
+
+              textarea.form-control(
+                name="description"
+                rows="4"
+                required
+              )= post.description
+
+            img.feed-image.rounded.mb-3(
+              src=post.image
+            )
+
+            button.btn.btn-primary.w-100(
+              type="submit"
+            )
+              | Guardar cambios

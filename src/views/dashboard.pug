@@ -44,6 +44,22 @@ block content
 
               p.card-text= post.description
 
+              .div.mt-3
+                a.btn.btn-warning.me-2(
+                  href=`/posts/edit/${post.id}`
+                )
+                  | Editar
+
+                form(
+                  action=`/posts/delete/${post.id}`
+                  method="POST"
+                  style="display:inline;"
+                  )
+                  button.btn.btn-danger(
+                  type="submit"
+                  )
+                  | Eliminar
+
               .mt-auto
 
                 p.text-muted.small

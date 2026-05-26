@@ -22,7 +22,11 @@ const createPost = async (req, res) => {
             UserId: req.session.user.id
         });
 
-        res.send("Publicación creada correctamente");
+        req.session.message = {
+            type: "success",
+            text: "Publicación creada correctamente"
+        };
+        res.redirect("/");
 
     } catch (error) {
 
@@ -32,7 +36,108 @@ const createPost = async (req, res) => {
     }
 };
 
+const showEditPost = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const post = await Post.findByPk(id);
+
+        if (!post) {
+
+            return res.send("Post no encontrado");
+        }
+
+        if (post.UserId !== req.session.user.id) {
+
+            return res.send("No autorizado");
+        }
+
+        res.render("edit-post", {
+            post
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.send("Error cargando edición");
+    }
+};
+
+const updatePost = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const { title, description } = req.body;
+
+        const post = await Post.findByPk(id);
+
+        if (!post) {
+
+            return res.send("Post no encontrado");
+        }
+
+        if (post.UserId !== req.session.user.id) {
+
+            return res.send("No autorizado");
+        }
+
+        await post.update({
+
+            title,
+
+            description
+        });
+
+        res.redirect("/dashboard");
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.send("Error actualizando publicación");
+    }
+};
+
+const deletePost = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const post = await Post.findByPk(id);
+
+        if (!post) {
+
+            return res.send("Post no encontrado");
+        }
+
+        if (post.UserId !== req.session.user.id) {
+
+            return res.send("No autorizado");
+        }
+
+        await post.destroy();
+
+        res.redirect("/dashboard");
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.send("Error eliminando publicación");
+    }
+};
+
 module.exports = {
     showCreatePost,
-    createPost
+    createPost,
+    showEditPost,
+    updatePost,
+    deletePost
 };
+

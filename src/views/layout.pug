@@ -33,4 +33,19 @@ html
 
     .container.mt-4
 
+    .container.mt-3
+
+      if message
+
+        .alert.alert-success.alert-dismissible.fade.show(
+          role="alert"
+        )
+
+          = message.text
+
+          button.btn-close(
+            type="button"
+            data-bs-dismiss="alert"
+          )
+
       block content

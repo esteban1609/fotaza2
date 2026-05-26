@@ -69,6 +69,15 @@ sequelize.sync()
         console.error("Error conectando BD:", error);
     });
 
+app.use((req, res, next) => {
+
+    res.locals.message = req.session.message;
+
+    delete req.session.message;
+
+    next();
+});
+
 app.use("/", dashboardRoutes);
 
 app.use("/", postRoutes);    

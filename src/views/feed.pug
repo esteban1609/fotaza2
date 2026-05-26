@@ -16,14 +16,17 @@ block content
         p.card-text= post.description
 
         p.text-muted
-          | Autor: 
-          a(
-             href=`/users/${post.User.id}`
-          )
-            = post.User.username
+         if post.User
+           | Autor: 
+           a(
+              href=`/users/${post.User.id}`
+           )
+              = post.User.username
+         else
+           | Usuario desconocido  
           
 
-        if post.User.id !== currentUser.id
+        if currentUser && post.User && post.User.id !== currentUser.id
 
           form(
             action=`/follow/${post.User.id}`

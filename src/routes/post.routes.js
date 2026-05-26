@@ -6,7 +6,10 @@ const router = express.Router();
 
 const {
     showCreatePost,
-    createPost
+    createPost,
+    showEditPost,
+    updatePost,
+    deletePost
 } = require("../controllers/post.controller");
 
 const {
@@ -23,6 +26,21 @@ router.post(
     "/posts/create",
     isAuthenticated,
     createPost
+);
+
+router.get(
+    "/posts/edit/:id",
+    showEditPost
+);
+
+router.post(
+    "/posts/edit/:id",
+    updatePost
+);
+
+router.post(
+    "/posts/delete/:id",
+    deletePost
 );
 
 module.exports = router;
