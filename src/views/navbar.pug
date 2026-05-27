@@ -28,7 +28,23 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow-sm
         li.nav-item
           a.nav-link(href="/posts/create")
             | Crear publicación
+        
+        form.d-flex.me-3(
+          action="/search"
+          method="GET"
+        )
 
+          input.form-control.me-2(
+            type="search"
+            name="q"
+            placeholder="Buscar publicaciones"
+          )
+
+          button.btn.btn-outline-light(
+            type="submit"
+          )
+            | Buscar
+        
         li.nav-item
           a.nav-link.text-danger(href="/logout")
             | Logout

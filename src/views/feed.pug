@@ -4,6 +4,16 @@ extends layout
 block content
 
   h1.mb-4 Feed de publicaciones
+  
+  if posts.length === 0
+
+    .alert.alert-warning.text-center
+
+      h4.mb-2
+        | No se encontraron publicaciones
+
+      p.mb-0
+        | Probá con otra búsqueda
 
   each post in posts
 
@@ -48,8 +58,29 @@ block content
 
           - average = (total / post.Ratings.length).toFixed(1)
 
-        p.fw-bold
-          | Valoración promedio: #{average} ⭐
+        - const roundedAverage = Math.round(average)
+
+        p.fw-bold.mb-2
+
+          | Valoración: 
+
+          each star in [1,2,3,4,5]
+
+            if star <= roundedAverage
+
+              span.text-warning ⭐
+
+            else
+
+              span.text-secondary ☆
+
+          |  (#{average})
+
+        p.mb-0
+          | 💬 #{post.Comments.length} comentarios
+
+        p.mb-0
+          | 🗳️ #{post.Ratings.length} valoraciones
 
         img.feed-image.rounded.mt-3.mb-3(
           src=post.image
