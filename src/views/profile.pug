@@ -2,46 +2,67 @@ extends layout
 
 block content
 
-  .card.shadow-sm.border-0.mb-4
+  .row.justify-content-center
 
-    .card-body.text-center
+    .col-lg-8
 
-      h1.mb-2
-        = profileUser.username
+      .card.shadow-sm.border-0.mb-4
 
-      p.text-muted
-        = profileUser.email
+        .card-body.text-center
 
-      .d-flex.justify-content-center.gap-4.mt-3
+          h1.mb-3
+            = profileUser.username
 
-        div
-          h4.mb-0= posts.length
-          small Publicaciones
+          p.text-muted
+            = profileUser.email
 
-        div
-          h4.mb-0= followers
-          small Seguidores
+          .d-flex.justify-content-center.gap-4.mt-4
 
-        div
-          h4.mb-0= following
-          small Siguiendo
+            .text-center
 
-  h2.mb-4 Publicaciones
+              h4
+                = followers.length
 
-  .row
+              p.text-muted
+                | Seguidores
 
-    each post in posts
+            .text-center
 
-      .col-md-6.col-lg-4.mb-4
+              h4
+                = following.length
 
-        .card.feed-card.shadow-sm.border-0.h-100
+              p.text-muted
+                | Siguiendo
 
-          img.feed-image(
-            src=post.image
-          )
+            .text-center
+
+              h4
+                = posts.length
+
+              p.text-muted
+                | Posts
+
+      h2.mb-4
+        | Publicaciones
+
+      if posts.length === 0
+
+        .alert.alert-secondary
+
+          | Este usuario todavía no publicó nada
+
+      each post in posts
+
+        .card.mb-4.shadow-sm
 
           .card-body
 
-            h5.card-title= post.title
+            h3.card-title
+              = post.title
 
-            p.card-text= post.description
+            p.card-text
+              = post.description
+
+            img.feed-image.rounded.mt-2(
+              src=post.image
+            )

@@ -12,7 +12,17 @@ const showProfile = async (req, res) => {
 
         const user = await User.findByPk(id, {
 
-            include: [Post]
+            include: [
+                {
+                    model: Post 
+                },
+                {
+                    association: "Followers"
+                },
+                {
+                    association: "Following"
+                }
+            ]
         });
 
         if (!user) {
@@ -40,10 +50,10 @@ const showProfile = async (req, res) => {
 
             posts: user.Posts,
 
-            followers,
+            followers: user.Followers,
 
-            following
-        });
+            following: user.Following
+        }); 
 
     } catch (error) {
 
