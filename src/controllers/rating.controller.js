@@ -14,9 +14,12 @@ const createRating = async (req, res) => {
 
         if (post.UserId === req.session.user.id) {
 
-            return res.send(
-                "No puedes valorar tu propia publicación"
-            );
+            req.session.message = {
+                type: "warning",
+                text: "No podés valorar tu propia publicación"
+            };
+
+            return res.redirect("/");
         }
 
         const existingRating =
@@ -30,9 +33,12 @@ const createRating = async (req, res) => {
 
         if (existingRating) {
 
-            return res.send(
-                "Ya valoraste esta publicación"
-            );
+            req.session.message = {
+                type: "info",
+                text: "Ya valoraste esta publicación"
+            };
+
+            return res.redirect("/");
         }
 
         await Rating.create({
@@ -50,7 +56,12 @@ const createRating = async (req, res) => {
 
         console.error(error);
 
-        res.send("Error creando valoración");
+        req.session.message = {
+            type: "danger",
+            text: "Error creando valoración"
+        };
+
+        return res.redirect("/");
     }
 };
 

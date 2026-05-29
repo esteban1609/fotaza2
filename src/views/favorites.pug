@@ -1,0 +1,27 @@
+extends layout
+
+block content
+
+  h1.mb-4 Mis favoritos
+
+  if favorites.length === 0
+
+    .alert.alert-secondary
+
+      | No tenés publicaciones guardadas
+
+  each post in favorites
+
+    .card.mb-4.shadow-sm
+
+      .card-body
+
+        h2.card-title
+          = post.title
+
+        p.card-text
+          = post.description
+
+        img.feed-image.rounded.mt-3(
+          src=post.image
+        )

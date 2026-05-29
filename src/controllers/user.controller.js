@@ -27,7 +27,12 @@ const showProfile = async (req, res) => {
 
         if (!user) {
 
-            return res.send("Usuario no encontrado");
+            req.session.message = {
+                type: "warning",
+                text: "Usuario no encontrado"
+            };
+
+            return res.redirect("/");
         }
 
         const followers = await Follow.count({
@@ -59,7 +64,12 @@ const showProfile = async (req, res) => {
 
         console.error(error);
 
-        res.send("Error cargando perfil");
+        req.session.message = {
+            type: "danger",
+            text: "Error cargando perfil"
+        };
+
+        return res.redirect("/");
     }
 };
 

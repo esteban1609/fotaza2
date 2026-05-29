@@ -32,7 +32,12 @@ const createPost = async (req, res) => {
 
         console.error(error);
 
-        res.send("Error creando publicación");
+        req.session.message = {
+            type: "danger",
+            text: "Error creando publicación"
+        };
+
+        return res.redirect("/");
     }
 };
 
@@ -46,12 +51,22 @@ const showEditPost = async (req, res) => {
 
         if (!post) {
 
-            return res.send("Post no encontrado");
+            req.session.message = {
+                type: "warning",
+                text: "Post no encontrado"
+            };
+
+            return res.redirect("/");
         }
 
         if (post.UserId !== req.session.user.id) {
 
-            return res.send("No autorizado");
+            req.session.message = {
+                type: "danger",
+                text: "No autorizado"
+            };
+
+            return res.redirect("/");
         }
 
         res.render("edit-post", {
@@ -62,7 +77,12 @@ const showEditPost = async (req, res) => {
 
         console.error(error);
 
-        res.send("Error cargando edición");
+        req.session.message = {
+            type: "danger",
+            text: "Error cargando edición"
+        };
+
+        return res.redirect("/");
     }
 };
 
@@ -78,12 +98,22 @@ const updatePost = async (req, res) => {
 
         if (!post) {
 
-            return res.send("Post no encontrado");
+            req.session.message = {
+                type: "warning",
+                text: "Post no encontrado"
+            };
+
+            return res.redirect("/");
         }
 
         if (post.UserId !== req.session.user.id) {
 
-            return res.send("No autorizado");
+            req.session.message = {
+                type: "danger",
+                text: "No autorizado"
+            };
+
+            return res.redirect("/");
         }
 
         await post.update({
@@ -99,7 +129,12 @@ const updatePost = async (req, res) => {
 
         console.error(error);
 
-        res.send("Error actualizando publicación");
+        req.session.message = {
+            type: "danger",
+            text: "Error actualizando publicación"
+        };
+
+        return res.redirect("/");
     }
 };
 
@@ -113,12 +148,22 @@ const deletePost = async (req, res) => {
 
         if (!post) {
 
-            return res.send("Post no encontrado");
+            req.session.message = {
+                type: "warning",
+                text: "Post no encontrado"
+            };
+
+            return res.redirect("/");
         }
 
         if (post.UserId !== req.session.user.id) {
 
-            return res.send("No autorizado");
+            req.session.message = {
+                type: "danger",
+                text: "No autorizado"
+            };
+
+            return res.redirect("/");
         }
 
         await post.destroy();
@@ -129,7 +174,12 @@ const deletePost = async (req, res) => {
 
         console.error(error);
 
-        res.send("Error eliminando publicación");
+        req.session.message = {
+            type: "danger",
+            text: "Error eliminando publicación"
+        };
+
+        return res.redirect("/");
     }
 };
 

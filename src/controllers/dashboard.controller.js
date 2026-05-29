@@ -22,7 +22,12 @@ const dashboard = async (req, res) => {
 
         console.error(error);
 
-        res.send("Error cargando dashboard");
+        req.session.message = {
+            type: "danger",
+            text: "Error cargando dashboard"
+        };
+
+        return res.redirect("/");
     }
 };
 

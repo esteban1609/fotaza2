@@ -11,9 +11,12 @@ const followUser = async (req, res) => {
             Number(userId) === req.session.user.id
         ) {
 
-            return res.send(
-                "No podés seguirte a vos mismo"
-            );
+            req.session.message = {
+                type: "warning",
+                text: "No podés seguirte a vos mismo"
+            };
+
+            return res.redirect("/");
         }
 
         const existingFollow =
@@ -27,9 +30,12 @@ const followUser = async (req, res) => {
 
         if (existingFollow) {
 
-            return res.send(
-                "Ya seguís este usuario"
-            );
+            req.session.message = {
+                type: "info",
+                text: "Ya seguís este usuario"
+            };
+
+            return res.redirect("/");
         }
 
         await Follow.create({
@@ -45,7 +51,12 @@ const followUser = async (req, res) => {
 
         console.error(error);
 
-        res.send("Error siguiendo usuario");
+        req.session.message = {
+            type: "danger",
+            text: "Error siguiendo usuario"
+        };
+
+        return res.redirect("/");
     }
 };
 

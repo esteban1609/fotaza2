@@ -3,6 +3,8 @@ const User = require("../models/User");
 const Comment = require("../models/Comment");
 const Rating = require("../models/Rating");
 const { Op } = require("sequelize");
+const Follow = require("../models/Follow");
+const Favorite = require("../models/Favorite");
 
 const feed = async (req, res) => {
 
@@ -26,16 +28,40 @@ const feed = async (req, res) => {
             ]
         });
 
+        const follows = await Follow.findAll({
+
+            where: {
+                followerId: req.session.user.id
+            }
+        });
+
+        const favorites = await Favorite.findAll({
+
+            where: {
+                UserId: req.session.user.id
+            }
+        });
+
         res.render("feed", {
             posts,
-            currentUser: req.session.user
+            
+            currentUser: req.session.user,
+            
+            follows,
+            
+            favorites
         });
 
     } catch (error) {
 
         console.error(error);
 
-        res.send("Error cargando publicaciones");
+        req.session.message = {
+            type: "danger",
+            text: "Error cargando publicación"
+        };
+
+        return res.redirect("/");
     }
 };
 
@@ -99,11 +125,19 @@ const searchPosts = async (req, res) => {
 
         console.error(error);
 
-        res.send("Error buscando publicaciones");
+        req.session.message = {
+            type: "danger",
+            text: "Error buscando publicaciones"
+        };
+
+        return res.redirect("/");
     }
 };
+
+
 
 module.exports = {
     feed,
     searchPosts
+    
 };

@@ -16,6 +16,11 @@ const createComment = async (req, res) => {
 
             PostId: postId
         });
+        
+        req.session.message = {
+            type: "success",
+            text: "Comentario creado correctamente"
+        };
 
         res.redirect("/");
 
@@ -23,7 +28,12 @@ const createComment = async (req, res) => {
 
         console.error(error);
 
-        res.send("Error creando comentario");
+        req.session.message = {
+            type: "danger",
+            text: "Error creando comentario"
+        };
+
+        return res.redirect("/");
     }
 };
 

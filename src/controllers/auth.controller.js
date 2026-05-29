@@ -20,10 +20,49 @@ const register = async (req, res) => {
         });
 
         if (existingUser) {
-            return res.send("El usuario ya existe");
+            req.session.message = {
+                type: "warning",
+                text: "El usuario ya existe"
+            };
+
+            return res.redirect("/register");
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
+        
+        const existingEmail = await User.findOne({
+
+            where: {
+                email
+            }
+        });
+
+        if (existingEmail) {
+
+            req.session.message = {
+                type: "warning",
+                text: "El email ya está registrado"
+            };
+
+            return res.redirect("/register");
+        }
+
+        const existingUsername = await User.findOne({
+
+            where: {
+                username
+            }
+        });
+
+        if (existingUsername) {
+
+            req.session.message = {
+                type: "warning",
+                text: "El nombre de usuario ya existe"
+            };
+
+            return res.redirect("/register");
+        }
 
         await User.create({
             username,
@@ -31,12 +70,22 @@ const register = async (req, res) => {
             password_hash: hashedPassword
         });
 
-        res.send("Usuario registrado correctamente ");
+        req.session.message = {
+            type: "success",
+            text: "Usuario registrado correctamente"
+        };
+
+        return res.redirect("/login");
 
     } catch (error) {
         console.error(error);
 
-        res.send("Error registrando usuario");
+        req.session.message = {
+            type: "danger",
+            text: "Error registrando usuario"
+        };
+
+        return res.redirect("/register");
     }
 };
 
@@ -51,7 +100,12 @@ const login = async (req, res) => {
         });
 
         if (!user) {
-            return res.send("Usuario no encontrado");
+            req.session.message = {
+                type: "danger",
+                text: "El usuario ya existe"
+            };
+
+return res.redirect("/register");
         }
 
         const validPassword = await bcrypt.compare(
@@ -60,8 +114,13 @@ const login = async (req, res) => {
         );
 
         if (!validPassword) {
-            return res.send("Contraseña incorrecta");
-        }
+           req.session.message = {
+                type: "danger",
+                text: "Contraseña incorrecta"
+            };
+
+            return res.redirect("/login");
+                    }
 
         req.session.user = {
             id: user.id,

@@ -34,8 +34,10 @@ block content
               = post.User.username
          else
            | Usuario desconocido  
-          
 
+          
+        - const isFollowing = follows.some(follow => follow.followingId === post.User.id)
+        
         if currentUser && post.User && post.User.id !== currentUser.id
 
           form(
@@ -44,8 +46,20 @@ block content
             class="mb-3"
           )
 
-            button.btn.btn-primary(type="submit")
-              | Seguir
+            if isFollowing
+
+              button.btn.btn-secondary(
+                type="button"
+                
+              )
+                | Siguiendo
+
+            else
+
+              button.btn.btn-primary(
+                type="submit"
+              )
+                | Seguir
 
         - let average = 0
 
@@ -82,9 +96,34 @@ block content
         p.mb-0
           | 🗳️ #{post.Ratings.length} valoraciones
 
-        img.feed-image.rounded.mt-3.mb-3(
-          src=post.image
+        - const isFavorite = favorites.some(favorite => favorite.PostId === post.id)
+
+        form(
+          action=`/favorites/${post.id}`
+          method="POST"
         )
+
+          button.btn.btn-outline-dark(type="submit")
+
+            if isFavorite
+
+              i.bi.bi-bookmark-fill
+
+            else
+
+              i.bi.bi-bookmark
+
+            |  Guardar  
+
+        .image-container.mt-3.mb-3
+
+          .image-background(
+            style=`background-image: url('${post.image}')`
+          )
+
+          img.feed-image.rounded(
+            src=post.image
+          )
 
         h3 Comentarios
 

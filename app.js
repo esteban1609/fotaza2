@@ -10,6 +10,9 @@ const commentRoutes = require("./src/routes/comment.routes");
 const ratingRoutes = require("./src/routes/rating.routes");
 const followRoutes = require("./src/routes/follow.routes");
 const userRoutes = require("./src/routes/user.routes");
+const favoriteRoutes = require("./src/routes/favorite.routes");
+
+//importación de modelos
 require("./src/models/User");
 
 require("./src/models/Post");
@@ -19,6 +22,8 @@ require("./src/models/Comment");
 require("./src/models/Rating");
 
 require("./src/models/Follow");
+
+require("./src/models/Favorite");
 
 const sessionStore = new SequelizeStore({
     db: sequelize
@@ -47,13 +52,24 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24
+        maxAge: 1000 * 60 * 60 * 24,
+
+        httpOnly: true
     }
 }));
 
 
 
 const PORT = process.env.PORT || 3000;
+
+app.use((req, res, next) => {
+
+    res.locals.message = req.session.message;
+
+    req.session.message = null;
+
+    next();
+});
 
 app.use("/", authRoutes);
 
@@ -69,14 +85,6 @@ sequelize.sync()
         console.error("Error conectando BD:", error);
     });
 
-app.use((req, res, next) => {
-
-    res.locals.message = req.session.message;
-
-    delete req.session.message;
-
-    next();
-});
 
 app.use("/", dashboardRoutes);
 
@@ -89,6 +97,8 @@ app.use("/", commentRoutes);
 app.use("/", ratingRoutes);
 
 app.use("/", followRoutes);
+
+app.use("/", favoriteRoutes);
 
 app.use("/", userRoutes);
 

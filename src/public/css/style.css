@@ -33,3 +33,81 @@ textarea{
 .feed-card:hover{
     transform: translateY(-5px);
 }
+
+.image-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 16px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+}
+
+.image-background {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(25px);
+    transform: scale(1.2);
+    opacity: 0.6;
+}
+
+.feed-image {
+    position: relative;
+    z-index: 2;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+body.dark-mode {
+
+    background-color: #121212;
+
+    color: white;
+}
+
+body.dark-mode .card {
+
+    background-color: #1e1e1e;
+
+    color: white;
+
+    border-color: #333;
+}
+
+body.dark-mode .navbar {
+
+    background-color: #1a1a1a !important;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+
+    background-color: #2a2a2a;
+
+    color: white;
+
+    border-color: #444;
+}
+
+body.dark-mode .form-control::placeholder {
+
+    color: #bbb;
+}
+
+body.dark-mode .alert {
+
+    color: white;
+}
+
+body.dark-mode a {
+
+    color: #8ab4f8;
+}
