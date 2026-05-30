@@ -69,3 +69,16 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow-sm
             i.bi.bi-bell-fill
 
             |  Notificaciones
+        a.nav-link(
+          href="/notifications"
+        )
+
+          i.bi.bi-bell-fill
+
+          if unreadNotifications > 0
+
+            |  (#{unreadNotifications})
+
+          else
+
+            |  Notificaciones

@@ -1,0 +1,26 @@
+extends layout
+
+block content
+
+  h1 Editar perfil
+
+  form(
+    action="/profile/edit"
+    method="POST"
+  )
+
+    .mb-3
+
+      label.form-label Username
+
+      input.form-control(
+        type="text"
+        name="username"
+        value=user.username
+      )
+
+    button.btn.btn-primary(
+      type="submit"
+    )
+
+      | Guardar cambios

@@ -12,6 +12,7 @@ const followRoutes = require("./src/routes/follow.routes");
 const userRoutes = require("./src/routes/user.routes");
 const favoriteRoutes = require("./src/routes/favorite.routes");
 const notificationRoutes = require("./src/routes/notification.routes");
+const Notification = require("./src/models/Notification");
 
 //importación de modelos
 require("./src/models/User");
@@ -87,6 +88,27 @@ sequelize.sync()
     .catch((error) => {
         console.error("Error conectando BD:", error);
     });
+
+    app.use(async (req, res, next) => {
+
+    res.locals.unreadNotifications = 0;
+
+    if (req.session.user) {
+
+        res.locals.unreadNotifications =
+            await Notification.count({
+
+                where: {
+
+                    UserId: req.session.user.id,
+
+                    read: false
+                }
+            });
+    }
+
+    next();
+});
 
 
 app.use("/", dashboardRoutes);

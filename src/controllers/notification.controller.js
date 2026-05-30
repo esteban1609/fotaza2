@@ -17,6 +17,24 @@ const showNotifications = async (req, res) => {
             ]
         });
 
+        await Notification.update(
+
+            {
+
+                read: true
+            },
+
+            {
+
+                where: {
+
+                    UserId: req.session.user.id,
+
+                    read: false
+                }
+            }
+        );
+
         res.render("notifications", {
 
             notifications

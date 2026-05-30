@@ -34,11 +34,20 @@ const User = sequelize.define("User", {
     active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
-    }
+    },
+
+    profile_image: {
+
+    type: DataTypes.TEXT,
+
+    allowNull: true
+}
     }, {
     tableName: "Users",
     
 });
+
+
 
 
 module.exports = User;

@@ -73,6 +73,65 @@ const showProfile = async (req, res) => {
     }
 };
 
+const showEditProfile = async (req, res) => {
+
+    const user = await User.findByPk(
+        req.session.user.id
+    );
+
+    res.render(
+        "edit-profile",
+        {
+            user
+        }
+    );
+};
+
+const updateProfile = async (req, res) => {
+
+    try {
+
+        const { username } = req.body;
+
+        await User.update(
+
+            {
+                username
+            },
+
+            {
+                where: {
+                    id: req.session.user.id
+                }
+            }
+        );
+
+        req.session.message = {
+
+            type: "success",
+
+            text: "Perfil actualizado correctamente"
+        };
+
+        res.redirect(`/profile/${req.session.user.id}`);
+
+    } catch (error) {
+
+        console.error(error);
+
+        req.session.message = {
+
+            type: "danger",
+
+            text: "Error actualizando perfil"
+        };
+
+        res.redirect("/profile/edit");
+    }
+};
+
 module.exports = {
-    showProfile
+    showProfile,
+    showEditProfile,
+    updateProfile
 };
