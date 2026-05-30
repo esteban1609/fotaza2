@@ -1,5 +1,9 @@
 const Comment = require("../models/Comment");
 
+const Notification = require("../models/Notification");
+
+const Post = require("../models/Post");
+
 const createComment = async (req, res) => {
 
     try {
@@ -16,6 +20,18 @@ const createComment = async (req, res) => {
 
             PostId: postId
         });
+
+        const post = await Post.findByPk(postId);
+
+        if (post.UserId !== req.session.user.id) {
+
+            await Notification.create({
+
+                UserId: post.UserId,
+
+                message: `${req.session.user.username} comentó tu publicación`
+            });
+        }
         
         req.session.message = {
             type: "success",

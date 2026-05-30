@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 const {
-    followUser
+    followUser,
+    unfollowUser
 } = require("../controllers/follow.controller");
 
 const {
@@ -14,6 +15,13 @@ router.post(
     "/follow/:userId",
     isAuthenticated,
     followUser
+);
+
+router.post(
+
+    "/unfollow/:userId",
+
+    unfollowUser
 );
 
 module.exports = router;

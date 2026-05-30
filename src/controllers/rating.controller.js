@@ -2,6 +2,8 @@ const Rating = require("../models/Rating");
 
 const Post = require("../models/Post");
 
+const Notification = require("../models/Notification");
+
 const createRating = async (req, res) => {
 
     try {
@@ -49,6 +51,23 @@ const createRating = async (req, res) => {
 
             PostId: postId
         });
+
+        if (post.UserId !== req.session.user.id) {
+
+            await Notification.create({
+
+                UserId: post.UserId,
+
+                message: `${req.session.user.username} valoró tu publicación`
+            });
+        }
+
+        req.session.message = {
+
+            type: "success",
+
+            text: "Publicación creada correctamente"
+        };
 
         res.redirect("/");
 

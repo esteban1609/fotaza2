@@ -103,9 +103,51 @@ const showFavorites = async (req, res) => {
     }
 };
 
+const removeFavorite = async (req, res) => {
+
+    try {
+
+        const { postId } = req.params;
+
+        await Favorite.destroy({
+
+            where: {
+
+                UserId: req.session.user.id,
+
+                PostId: postId
+            }
+        });
+
+        req.session.message = {
+
+            type: "success",
+
+            text: "Favorito eliminado"
+        };
+
+        res.redirect("/favorites");
+
+    } catch (error) {
+
+        console.error(error);
+
+        req.session.message = {
+
+            type: "danger",
+
+            text: "Error eliminando favorito"
+        };
+
+        res.redirect("/favorites");
+    }
+};
+
 module.exports = {
 
     addFavorite,
 
-    showFavorites
+    showFavorites,
+
+    removeFavorite
 };

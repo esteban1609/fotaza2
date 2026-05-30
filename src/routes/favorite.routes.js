@@ -6,7 +6,9 @@ const {
 
     addFavorite,
 
-    showFavorites
+    showFavorites,
+
+    removeFavorite
 
 } = require("../controllers/favorite.controller");
 
@@ -22,6 +24,13 @@ router.get(
     "/favorites",
 
     showFavorites
+);
+
+router.post(
+
+    "/favorites/remove/:postId",
+
+    removeFavorite
 );
 
 module.exports = router;

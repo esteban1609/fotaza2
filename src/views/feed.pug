@@ -37,24 +37,29 @@ block content
 
           
         - const isFollowing = follows.some(follow => follow.followingId === post.User.id)
-        
+
         if currentUser && post.User && post.User.id !== currentUser.id
 
-          form(
-            action=`/follow/${post.User.id}`
-            method="POST"
-            class="mb-3"
-          )
+          if isFollowing
 
-            if isFollowing
+            form(
+              action=`/unfollow/${post.User.id}`
+              method="POST"
+              class="mb-3"
+            )
 
               button.btn.btn-secondary(
-                type="button"
-                
+                type="submit"
               )
                 | Siguiendo
 
-            else
+          else
+
+            form(
+              action=`/follow/${post.User.id}`
+              method="POST"
+              class="mb-3"
+            )
 
               button.btn.btn-primary(
                 type="submit"

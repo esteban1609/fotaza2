@@ -1,0 +1,19 @@
+extends layout
+
+block content
+
+  h1.mb-4 Notificaciones
+
+  if notifications.length === 0
+
+    .alert.alert-secondary
+
+      | No tenés notificaciones
+
+  each notification in notifications
+
+    .card.mb-2
+
+      .card-body
+
+        = notification.message
