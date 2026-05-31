@@ -68,17 +68,22 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow-sm
 
             i.bi.bi-bell-fill
 
-            |  Notificaciones
-        a.nav-link(
-          href="/notifications"
-        )
+            if unreadNotifications > 0
 
-          i.bi.bi-bell-fill
+              |  (#{unreadNotifications})
 
-          if unreadNotifications > 0
+            else
 
-            |  (#{unreadNotifications})
+              |  Notificaciones
 
-          else
+        if currentUser
 
-            |  Notificaciones
+          li.nav-item
+
+            a.nav-link(
+              href=`/users/${currentUser.id}`
+            )
+
+              i.bi.bi-person-circle
+
+              |  Mi perfil

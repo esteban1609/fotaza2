@@ -10,37 +10,57 @@ block content
 
         .card-body.text-center
 
+          if profileUser.profile_image
+
+            img.rounded-circle.mb-3(
+              src=profileUser.profile_image
+              width="150"
+              height="150"
+            )
+
+          else
+
+            i.bi.bi-person-circle.display-1
+
           h1.mb-3
             = profileUser.username
 
           p.text-muted
             = profileUser.email
 
-          .d-flex.justify-content-center.gap-4.mt-4
+          .row.text-center.mt-4
 
-            .text-center
+            .col
 
-              h4
-                = followers.length
+              h4= postCount
 
-              p.text-muted
-                | Seguidores
+              p.text-muted Publicaciones
 
-            .text-center
+            .col
 
-              h4
-                = following.length
+              h4= followers.length
 
-              p.text-muted
-                | Siguiendo
+              p.text-muted Seguidores
 
-            .text-center
+            .col
 
-              h4
-                = posts.length
+              h4= following.length
 
-              p.text-muted
-                | Posts
+              p.text-muted Siguiendo
+
+            .col
+
+              h4= favoriteCount
+
+              p.text-muted Favoritos
+
+          if loggedUser && loggedUser.id === profileUser.id
+
+            a.btn.btn-outline-primary.mt-3(
+              href="/profile/edit"
+            )
+
+              | Editar perfil
 
       h2.mb-4
         | Publicaciones

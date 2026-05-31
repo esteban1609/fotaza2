@@ -4,6 +4,8 @@ const Post = require("../models/Post");
 
 const Follow = require("../models/Follow");
 
+const Favorite = require("../models/Favorite");
+
 const showProfile = async (req, res) => {
 
     try {
@@ -49,6 +51,16 @@ const showProfile = async (req, res) => {
             }
         });
 
+        const favoriteCount = await Favorite.count({
+
+            where: {
+
+                UserId: user.id
+            }
+        });
+
+        const postCount = user.Posts.length;
+
         res.render("profile", {
 
             profileUser: user,
@@ -57,7 +69,13 @@ const showProfile = async (req, res) => {
 
             followers: user.Followers,
 
-            following: user.Following
+            following: user.Following,
+            
+            postCount,
+            
+            favoriteCount,
+            
+            loggedUser: req.session.user
         }); 
 
     } catch (error) {
