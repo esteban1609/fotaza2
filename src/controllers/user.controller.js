@@ -109,20 +109,31 @@ const updateProfile = async (req, res) => {
 
     try {
 
-        const { username } = req.body;
+        const {
 
-        await User.update(
+            username,
 
-            {
-                username
-            },
+            email,
 
-            {
-                where: {
-                    id: req.session.user.id
-                }
+            profile_image
+
+        } = req.body;
+
+        await User.update({
+
+            username,
+
+            email,
+
+            profile_image
+
+        }, {
+
+            where: {
+
+                id: req.session.user.id
             }
-        );
+        });
 
         req.session.message = {
 
@@ -131,7 +142,7 @@ const updateProfile = async (req, res) => {
             text: "Perfil actualizado correctamente"
         };
 
-        res.redirect(`/profile/${req.session.user.id}`);
+        res.redirect(`/users/${req.session.user.id}`);
 
     } catch (error) {
 

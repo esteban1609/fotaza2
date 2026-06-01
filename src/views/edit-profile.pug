@@ -2,7 +2,7 @@ extends layout
 
 block content
 
-  h1 Editar perfil
+  h1.mb-4 Editar perfil
 
   form(
     action="/profile/edit"
@@ -19,8 +19,56 @@ block content
         value=user.username
       )
 
+    .mb-3
+
+      label.form-label Email
+
+      input.form-control(
+        type="email"
+        name="email"
+        value=user.email
+      )
+
+    .mb-3
+
+      label.form-label Foto de perfil
+
+      input.form-control(
+        type="file"
+        id="profileImage"
+        accept="image/*"
+      )
+
+    input(
+      type="hidden"
+      name="profile_image"
+      id="profileImageBase64"
+      value=user.profile_image
+    )
+
     button.btn.btn-primary(
       type="submit"
     )
 
       | Guardar cambios
+
+  script.
+
+    document.getElementById("profileImage")
+      .addEventListener("change", function(event) {
+
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+
+          document.getElementById(
+            "profileImageBase64"
+          ).value = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+      });

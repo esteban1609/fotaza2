@@ -134,9 +134,20 @@ block content
 
         each comment in post.Comments
 
-          p
+          .d-flex.align-items-center.mb-2
+
+            if comment.User.profile_image
+
+              img.rounded-circle.me-2(
+                src=comment.User.profile_image
+                width="30"
+                height="30"
+              )
+
             strong #{comment.User.username}:
-            |  #{comment.content}
+
+            span.ms-2
+              = comment.content
 
         form(
           action=`/comments/create/${post.id}`

@@ -114,11 +114,31 @@ const searchPosts = async (req, res) => {
             }
         });
 
+        const follows = await Follow.findAll({
+
+            where: {
+
+                followerId: req.session.user.id
+            }
+        });
+
+        const favorites = await Favorite.findAll({
+
+            where: {
+
+                UserId: req.session.user.id
+            }
+        });
+
         res.render("feed", {
 
             posts,
 
-            currentUser: req.session.user
+            currentUser: req.session.user,
+
+            follows,
+
+            favorites
         });
 
     } catch (error) {

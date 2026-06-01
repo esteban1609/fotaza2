@@ -27,6 +27,10 @@ block content
 
           p.text-muted
             = profileUser.email
+          
+          small.text-muted
+
+            | Miembro desde #{new Date(profileUser.createdAt).toLocaleDateString()}
 
           .row.text-center.mt-4
 
@@ -71,18 +75,21 @@ block content
 
           | Este usuario todavía no publicó nada
 
-      each post in posts
+      else
 
-        .card.mb-4.shadow-sm
+        .row
 
-          .card-body
+          each post in posts
 
-            h3.card-title
-              = post.title
+            .col-md-4.mb-4
 
-            p.card-text
-              = post.description
+              .card.shadow-sm.h-100
 
-            img.feed-image.rounded.mt-2(
-              src=post.image
-            )
+                img.card-img-top(
+                  src=post.image
+                )
+
+                .card-body
+
+                  h6.card-title
+                    = post.title

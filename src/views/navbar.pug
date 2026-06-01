@@ -84,6 +84,14 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow-sm
               href=`/users/${currentUser.id}`
             )
 
-              i.bi.bi-person-circle
+              if currentUser.profile_image
 
-              |  Mi perfil
+                img.rounded-circle(
+                  src=currentUser.profile_image
+                  width="32"
+                  height="32"
+                )
+
+              else
+
+                i.bi.bi-person-circle
