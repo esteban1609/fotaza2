@@ -1,0 +1,34 @@
+extends layout
+
+block content
+
+  h1.mb-4 Denuncias
+
+  if reports.length === 0
+
+    .alert.alert-success
+
+      | No hay denuncias
+
+  each report in reports
+
+    .card.mb-3
+
+      .card-body
+
+        h5
+          = report.reason
+
+        p
+          = report.description
+
+        p.text-muted
+
+          | Usuario: #{report.User.username}
+
+        p.text-muted
+
+          | Publicación: #{report.Post.title}
+
+        
+        

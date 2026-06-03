@@ -119,6 +119,47 @@ block content
               i.bi.bi-bookmark
 
             |  Guardar  
+        
+        form(
+          action=`/interest/${post.id}`
+          method="POST"
+          class="mt-2"
+        )
+
+          button.btn.btn-info(
+            type="submit"
+          )
+
+            |  Me interesa
+        
+        form(
+          action=`/reports/${post.id}`
+          method="POST"
+          class="mt-2"
+        )
+
+          select.form-select.mb-2(
+            name="reason"
+          )
+
+            option Spam
+
+            option Contenido ofensivo
+
+            option Copyright
+
+            option Otro
+
+          textarea.form-control.mb-2(
+            name="description"
+            placeholder="Motivo de la denuncia"
+          )
+
+          button.btn.btn-danger(
+            type="submit"
+          )
+
+            | Denunciar
 
         .image-container.mt-3.mb-3
 

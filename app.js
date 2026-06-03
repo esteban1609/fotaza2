@@ -13,6 +13,8 @@ const userRoutes = require("./src/routes/user.routes");
 const favoriteRoutes = require("./src/routes/favorite.routes");
 const notificationRoutes = require("./src/routes/notification.routes");
 const Notification = require("./src/models/Notification");
+const reportRoutes = require("./src/routes/report.routes");
+const interestRoutes = require("./src/routes/interest.routes");
 
 //importación de modelos
 require("./src/models/User");
@@ -28,6 +30,10 @@ require("./src/models/Follow");
 require("./src/models/Favorite");
 
 require("./src/models/Notification");
+
+require("./src/models/Report");
+
+require("./src/models/Interest");
 
 const sessionStore = new SequelizeStore({
     db: sequelize
@@ -126,6 +132,10 @@ app.use("/", followRoutes);
 app.use("/", favoriteRoutes);
 
 app.use("/", notificationRoutes);
+
+app.use("/", reportRoutes);
+
+app.use("/", interestRoutes);
 
 app.use("/", userRoutes);
 
