@@ -1,6 +1,7 @@
 const Interest = require("../models/Interest");
 const Post = require("../models/Post");
 const Notification = require("../models/Notification");
+const User = require("../models/User");
 
 const createInterest = async (req, res) => {
 
@@ -64,7 +65,55 @@ const createInterest = async (req, res) => {
     }
 };
 
+const showInterests = async (req, res) => {
+
+    try {
+
+        const { postId } = req.params;
+
+        const post = await Post.findByPk(postId);
+
+        if (!post) {
+
+            return res.redirect("/");
+        }
+
+        if (post.UserId !== req.session.user.id) {
+
+            return res.redirect("/");
+        }
+
+        const interests = await Interest.findAll({
+
+            where: {
+
+                PostId: postId
+            },
+
+            include: [
+
+                User
+            ]
+        });
+
+        res.render("interests", {
+
+            interests,
+
+            post
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.redirect("/");
+    }
+};
+
 module.exports = {
 
-    createInterest
+    createInterest,
+
+    showInterests
 };

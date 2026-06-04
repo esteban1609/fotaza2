@@ -25,6 +25,12 @@ const Post = sequelize.define("Post", {
     image: {
         type: DataTypes.TEXT,
         allowNull: false
+    },
+    copyright: {
+
+        type: DataTypes.BOOLEAN,
+
+        defaultValue: false
     }
 
 }, {

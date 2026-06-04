@@ -1,0 +1,22 @@
+extends layout
+
+block content
+
+  h1.mb-4
+    | Interesados en "#{post.title}"
+
+  if interests.length === 0
+
+    .alert.alert-secondary
+
+      | Nadie marcó interés todavía
+
+  else
+
+    each interest in interests
+
+      .card.mb-2
+
+        .card-body
+
+          = interest.User.username

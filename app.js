@@ -83,7 +83,7 @@ app.use((req, res, next) => {
 
 app.use("/", authRoutes);
 
-sequelize.sync()
+sequelize.sync({alter:true})
     .then(() => {
         console.log("Base de datos sincronizada ");
 

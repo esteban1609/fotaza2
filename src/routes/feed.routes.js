@@ -4,7 +4,8 @@ const router = express.Router();
 
 const {
     feed,
-    searchPosts
+    searchPosts,
+    showFollowingPosts
 } = require("../controllers/feed.controller");
 
 router.get("/", feed);
@@ -14,4 +15,8 @@ router.get(
     searchPosts
 );
 
+router.get(
+    "/following-posts",
+    showFollowingPosts
+);
 module.exports = router;

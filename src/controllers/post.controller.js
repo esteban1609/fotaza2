@@ -9,15 +9,27 @@ const createPost = async (req, res) => {
 
     try {
 
-        const { title, description } = req.body;
-
-        const { image } = req.body;
-
-        await Post.create({
+        const {
 
             title,
+
             description,
+
             image,
+
+            copyright
+
+        } = req.body;
+
+       await Post.create({
+
+            title,
+
+            description,
+
+            image,
+
+            copyright: copyright === "on",
 
             UserId: req.session.user.id
         });

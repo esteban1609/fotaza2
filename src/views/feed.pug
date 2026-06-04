@@ -26,6 +26,7 @@ block content
         p.card-text= post.description
 
         p.text-muted
+         
          if post.User
            | Autor: 
            a(
@@ -34,6 +35,18 @@ block content
               = post.User.username
          else
            | Usuario desconocido  
+        
+        if post.copyright
+
+          p.text-danger.mb-1
+
+            | © Copyright protegido
+
+        else
+
+          p.text-success.mb-1
+
+            | Libre de copyright
 
           
         - const isFollowing = follows.some(follow => follow.followingId === post.User.id)
@@ -100,6 +113,18 @@ block content
 
         p.mb-0
           | 🗳️ #{post.Ratings.length} valoraciones
+       
+        p.mb-0
+
+          | ❤️ #{post.Interests.length} interesados
+
+        if currentUser.id === post.UserId
+
+          a(
+            href=`/posts/${post.id}/interests`
+          )
+
+            | Ver interesados
 
         - const isFavorite = favorites.some(favorite => favorite.PostId === post.id)
 
