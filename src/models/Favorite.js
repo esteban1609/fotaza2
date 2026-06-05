@@ -6,6 +6,8 @@ const User = require("./User");
 
 const Post = require("./Post");
 
+const Collection = require("./Collection");
+
 const Favorite = sequelize.define("Favorite", {
 
     id: {
@@ -33,5 +35,9 @@ Post.belongsToMany(User, {
 
     through: Favorite
 });
+
+Favorite.belongsTo(Collection);
+
+Collection.hasMany(Favorite);
 
 module.exports = Favorite;

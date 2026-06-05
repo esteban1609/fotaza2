@@ -1,0 +1,29 @@
+extends layout
+
+block content
+
+  h1 Mis colecciones
+
+  form(
+    action="/collections/create"
+    method="POST"
+  )
+
+    input.form-control.mb-2(
+      name="name"
+      placeholder="Nombre"
+    )
+
+    button.btn.btn-primary
+
+      | Crear colección
+
+  hr
+
+  each collection in collections
+
+    .card.mb-2
+
+      .card-body
+
+        = collection.name

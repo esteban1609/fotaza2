@@ -15,6 +15,7 @@ const notificationRoutes = require("./src/routes/notification.routes");
 const Notification = require("./src/models/Notification");
 const reportRoutes = require("./src/routes/report.routes");
 const interestRoutes = require("./src/routes/interest.routes");
+const collectionRoutes = require("./src/routes/collection.routes");
 
 //importación de modelos
 require("./src/models/User");
@@ -83,7 +84,7 @@ app.use((req, res, next) => {
 
 app.use("/", authRoutes);
 
-sequelize.sync({alter:true})
+sequelize.sync()
     .then(() => {
         console.log("Base de datos sincronizada ");
 
@@ -136,6 +137,8 @@ app.use("/", notificationRoutes);
 app.use("/", reportRoutes);
 
 app.use("/", interestRoutes);
+
+app.use("/", collectionRoutes);
 
 app.use("/", userRoutes);
 
