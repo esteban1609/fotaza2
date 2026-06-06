@@ -133,17 +133,23 @@ block content
           method="POST"
         )
 
-          button.btn.btn-outline-dark(type="submit")
+          select.form-select.mb-2(
+            name="CollectionId"
+          )
 
-            if isFavorite
+            each collection in collections
 
-              i.bi.bi-bookmark-fill
+              option(
+                value=collection.id
+              )
 
-            else
+                = collection.name
 
-              i.bi.bi-bookmark
+          button.btn.btn-outline-dark(
+            type="submit"
+          )
 
-            |  Guardar  
+            | Guardar  
         
         form(
           action=`/interest/${post.id}`

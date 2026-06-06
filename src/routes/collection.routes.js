@@ -6,7 +6,9 @@ const {
 
     createCollection,
 
-    showCollections
+    showCollections,
+
+    showCollection
 
 } = require("../controllers/collection.controller");
 
@@ -18,6 +20,11 @@ router.get(
 router.post(
     "/collections/create",
     createCollection
+);
+
+router.get(
+    "/collections/:id",
+    showCollection
 );
 
 module.exports = router;

@@ -40,4 +40,8 @@ Favorite.belongsTo(Collection);
 
 Collection.hasMany(Favorite);
 
+Favorite.belongsTo(Post);
+
+Post.hasMany(Favorite);
+
 module.exports = Favorite;

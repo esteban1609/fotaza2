@@ -6,6 +6,7 @@ const { Op } = require("sequelize");
 const Follow = require("../models/Follow");
 const Favorite = require("../models/Favorite");
 const Interest = require("../models/Interest");
+const Collection = require("../models/Collection");
 
 const feed = async (req, res) => {
 
@@ -46,6 +47,14 @@ const feed = async (req, res) => {
             }
         });
 
+        const collections = await Collection.findAll({
+
+            where: {
+
+                UserId: req.session.user.id
+            }
+        });
+
         res.render("feed", {
             posts,
             
@@ -53,7 +62,9 @@ const feed = async (req, res) => {
             
             follows,
             
-            favorites
+            favorites,
+
+            collections
         });
 
     } catch (error) {
@@ -137,6 +148,14 @@ const searchPosts = async (req, res) => {
             }
         });
 
+        const collections = await Collection.findAll({
+
+            where: {
+
+                UserId: req.session.user.id
+            }
+        });
+
         res.render("feed", {
 
             posts,
@@ -145,7 +164,9 @@ const searchPosts = async (req, res) => {
 
             follows,
 
-            favorites
+            favorites,
+
+            collections
         });
 
     } catch (error) {

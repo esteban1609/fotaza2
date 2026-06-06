@@ -2,28 +2,55 @@ extends layout
 
 block content
 
-  h1 Mis colecciones
+  h1.mb-4 Mis colecciones
 
   form(
     action="/collections/create"
     method="POST"
+    class="mb-4"
   )
 
-    input.form-control.mb-2(
-      name="name"
-      placeholder="Nombre"
-    )
+    .input-group
 
-    button.btn.btn-primary
+      input.form-control(
+        name="name"
+        placeholder="Nombre de la colección"
+      )
 
-      | Crear colección
+      button.btn.btn-primary(
+        type="submit"
+      )
 
-  hr
+        | Crear colección
 
-  each collection in collections
+  if collections.length === 0
 
-    .card.mb-2
+    .alert.alert-secondary
 
-      .card-body
+      | Todavía no creaste ninguna colección
 
-        = collection.name
+  else
+
+    .row
+
+      each collection in collections
+
+        .col-md-6.col-lg-4.mb-4
+
+          .card.shadow-sm.h-100
+
+            .card-body.text-center
+
+              i.bi.bi-folder-fill.display-3.text-warning
+
+              h4.mt-3
+
+                a.text-decoration-none(
+                  href=`/collections/${collection.id}`
+                )
+
+                  = collection.name
+
+              p.text-muted.mb-0
+
+                | #{collection.Favorites.length} publicaciones

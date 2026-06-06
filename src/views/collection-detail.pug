@@ -1,0 +1,37 @@
+extends layout
+
+block content
+
+  h1.mb-4
+    = collection.name
+
+  if favorites.length === 0
+
+    .alert.alert-secondary
+
+      | Esta colección está vacía
+
+  else
+
+    .row
+
+      each favorite in favorites
+
+        .col-md-6.col-lg-4.mb-4
+
+          .card.shadow-sm.h-100
+
+            img.card-img-top(
+              src=favorite.Post.image
+              style="height: 220px; object-fit: cover;"
+            )
+
+            .card-body
+
+              h5.card-title
+
+                = favorite.Post.title
+
+              p.card-text.text-muted
+
+                = favorite.Post.description

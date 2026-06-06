@@ -10,30 +10,41 @@ block content
 
       | No tenés publicaciones guardadas
 
-  each post in favorites
+  else
 
-    .card.mb-4.shadow-sm
+    .row
 
-      .card-body
+      each post in favorites
 
-        .d-flex.justify-content-between.align-items-start
+        .col-md-6.col-lg-4.mb-4
 
-          h2.card-title= post.title
+          .card.shadow-sm.h-100
 
-          form(
-            action=`/favorites/remove/${post.id}`
-            method="POST"
-          )
-
-            button.btn.btn-sm.btn-outline-danger(
-              type="submit"
-              title="Quitar de favoritos"
+            img.card-img-top(
+              src=post.image
+              style="height: 220px; object-fit: cover;"
             )
 
-              i.bi.bi-x-lg
+            .card-body.d-flex.flex-column
 
-        p.card-text= post.description
+              .d-flex.justify-content-between.align-items-start.mb-2
 
-        img.feed-image.rounded.mt-3(
-          src=post.image
-        )
+                h5.card-title.mb-0
+
+                  = post.title
+
+                form(
+                  action=`/favorites/remove/${post.id}`
+                  method="POST"
+                )
+
+                  button.btn.btn-sm.btn-outline-danger(
+                    type="submit"
+                    title="Quitar de favoritos"
+                  )
+
+                    i.bi.bi-x-lg
+
+              p.card-text.text-muted.flex-grow-1
+
+                = post.description

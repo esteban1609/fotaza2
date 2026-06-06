@@ -1,5 +1,9 @@
 const Collection = require("../models/Collection");
 
+const Favorite = require("../models/Favorite");
+
+const Post = require("../models/Post");
+
 const createCollection = async (req, res) => {
 
     try {
@@ -30,14 +34,18 @@ const createCollection = async (req, res) => {
 
 const showCollections = async (req, res) => {
 
-    const collections =
-        await Collection.findAll({
+    const collections = await Collection.findAll({
 
-            where: {
+        where: {
 
-                UserId: req.session.user.id
-            }
-        });
+            UserId: req.session.user.id
+        },
+
+        include: [
+
+            Favorite
+        ]
+    });
 
     res.render("collections", {
 
@@ -45,8 +53,46 @@ const showCollections = async (req, res) => {
     });
 };
 
+const showCollection = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const collection = await Collection.findByPk(id);
+
+        const favorites = await Favorite.findAll({
+
+            where: {
+
+                CollectionId: id
+            },
+
+            include: [
+
+                Post
+            ]
+        });
+
+        res.render("collection-detail", {
+
+            collection,
+
+            favorites
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.redirect("/collections");
+    }
+};
+
 module.exports ={
     createCollection,
 
-    showCollections
+    showCollections,
+
+    showCollection
 }
