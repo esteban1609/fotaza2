@@ -127,6 +127,12 @@ const searchPosts = async (req, res) => {
                         "$User.username$": {
                             [Op.iLike]: `%${q}%`
                         }
+                    },
+                   
+                    {
+                        tags: {
+                            [Op.iLike]: `%${q}%`
+                        }
                     }
                 ]
             }

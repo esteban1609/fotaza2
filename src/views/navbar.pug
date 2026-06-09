@@ -15,107 +15,101 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow-sm
 
     .collapse.navbar-collapse#navbarNav
 
-      ul.navbar-nav.ms-auto
+      ul.navbar-nav.me-auto
 
         li.nav-item
+
           a.nav-link(href="/")
+
+            i.bi.bi-house-fill.me-1
+
             | Feed
 
         li.nav-item
-          a.nav-link(href="/dashboard")
-            | Dashboard
 
-        li.nav-item
           a.nav-link(href="/posts/create")
-            | Crear publicación
-        
-        form.d-flex.me-3(
-          action="/search"
-          method="GET"
-        )
 
-          input.form-control.me-2(
-            type="search"
-            name="q"
-            placeholder="Buscar publicaciones"
-          )
+            i.bi.bi-plus-circle-fill.me-1
 
-          button.btn.btn-outline-light(
-            type="submit"
-          )
-            | Buscar
-        
-        li.nav-item
-          a.nav-link.text-danger(href="/logout")
-            | Logout
-        
+            | Publicar
+
         li.nav-item
 
-          a.nav-link(
-            href="/favorites"
-          )
-            | Favoritos 
-        
+          a.nav-link(href="/favorites")
+
+            i.bi.bi-bookmark-fill.me-1
+
+            | Favoritos
+
         li.nav-item
 
-          a.nav-link(
-            href="/collections"
-          )
+          a.nav-link(href="/collections")
+
+            i.bi.bi-folder-fill.me-1
 
             | Colecciones
-        
-        button#theme-toggle.btn.btn-outline-light.ms-3
-
-          i.bi.bi-moon-fill       
-        
-        li.nav-item
-
-          a.nav-link(
-            href="/notifications"
-          )
-
-            i.bi.bi-bell-fill
-
-            if unreadNotifications > 0
-
-              |  (#{unreadNotifications})
-
-            else
-
-              |  Notificaciones
-
-        if currentUser
-
-          li.nav-item
-
-            a.nav-link(
-              href=`/users/${currentUser.id}`
-            )
-
-              if currentUser.profile_image
-
-                img.rounded-circle(
-                  src=currentUser.profile_image
-                  width="32"
-                  height="32"
-                )
-
-              else
-
-                i.bi.bi-person-circle
 
         li.nav-item
 
-          a.nav-link(
-            href="/reports"
-          )
+          a.nav-link(href="/following-posts")
 
-            | Denuncias
-        
-        li.nav-item
-
-          a.nav-link(
-            href="/following-posts"
-          )
+            i.bi.bi-people-fill.me-1
 
             | Siguiendo
+
+      form.d-flex.me-3(
+        action="/search"
+        method="GET"
+      )
+
+        input.form-control.me-2(
+          type="search"
+          name="q"
+          placeholder="Buscar publicaciones"
+        )
+
+        button.btn.btn-outline-light(
+          type="submit"
+        )
+
+          i.bi.bi-search
+
+      button#theme-toggle.btn.btn-outline-light.me-3
+
+        i.bi.bi-moon-fill
+
+      a.nav-link.text-light.me-3(
+        href="/notifications"
+      )
+
+        i.bi.bi-bell-fill
+
+        if unreadNotifications > 0
+
+          span.ms-1
+
+            | (#{unreadNotifications})
+
+      if currentUser
+
+        a.nav-link.text-light.me-3(
+          href=`/users/${currentUser.id}`
+        )
+
+          if currentUser.profile_image
+
+            img.rounded-circle.border.border-light(
+              src=currentUser.profile_image
+              width="32"
+              height="32"
+            )
+
+          else
+
+            i.bi.bi-person-circle.fs-4.text-light
+
+      a.nav-link.text-danger(
+        href="/logout"
+      )
+
+        i.bi.bi-box-arrow-right

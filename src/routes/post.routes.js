@@ -9,7 +9,8 @@ const {
     createPost,
     showEditPost,
     updatePost,
-    deletePost
+    deletePost,
+    toggleComments
 } = require("../controllers/post.controller");
 
 const {
@@ -41,6 +42,11 @@ router.post(
 router.post(
     "/posts/delete/:id",
     deletePost
+);
+
+router.post(
+    "/posts/toggle-comments/:id",
+    toggleComments
 );
 
 module.exports = router;

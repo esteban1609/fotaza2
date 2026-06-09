@@ -16,6 +16,8 @@ const createPost = async (req, res) => {
             description,
 
             image,
+            
+            tags,
 
             copyright
 
@@ -28,6 +30,8 @@ const createPost = async (req, res) => {
             description,
 
             image,
+
+            tags,
 
             copyright: copyright === "on",
 
@@ -195,11 +199,42 @@ const deletePost = async (req, res) => {
     }
 };
 
+const toggleComments = async (req, res) => {
+
+    try {
+
+        const post = await Post.findByPk(
+            req.params.id
+        );
+
+        if (
+            post.UserId !== req.session.user.id
+        ) {
+
+            return res.redirect("/");
+        }
+
+        await post.update({
+
+            commentsEnabled: !post.commentsEnabled
+        });
+
+        res.redirect("/");
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.redirect("/");
+    }
+};
+
 module.exports = {
     showCreatePost,
     createPost,
     showEditPost,
     updatePost,
-    deletePost
+    deletePost,
+    toggleComments
 };
 

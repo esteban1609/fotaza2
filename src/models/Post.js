@@ -26,6 +26,18 @@ const Post = sequelize.define("Post", {
         type: DataTypes.TEXT,
         allowNull: false
     },
+    tags: {
+
+        type: DataTypes.STRING,
+
+        allowNull: true
+    },
+    commentsEnabled: {
+
+        type: DataTypes.BOOLEAN,
+
+        defaultValue: true
+    },
     copyright: {
 
         type: DataTypes.BOOLEAN,
