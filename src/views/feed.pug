@@ -140,34 +140,6 @@ block content
 
             | Libre de copyright
 
-        if currentUser && post.User && post.User.id !== currentUser.id
-
-          if isFollowing
-
-            form(
-              action=`/unfollow/${post.User.id}`
-              method="POST"
-              class="mb-3"
-            )
-
-              button.btn.btn-secondary(
-                type="submit"
-              )
-                | Siguiendo
-
-          else
-
-            form(
-              action=`/follow/${post.User.id}`
-              method="POST"
-              class="mb-3"
-            )
-
-              button.btn.btn-primary(
-                type="submit"
-              )
-                | Seguir
-
         - let average = 0
 
         if post.Ratings.length > 0

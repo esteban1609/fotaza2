@@ -16,7 +16,7 @@ const showProfile = async (req, res) => {
 
             include: [
                 {
-                    model: Post 
+                    model: Post
                 },
                 {
                     association: "Followers"
@@ -37,14 +37,14 @@ const showProfile = async (req, res) => {
             return res.redirect("/");
         }
 
-        const followers = await Follow.count({
+        const followersCount = await Follow.count({
 
             where: {
                 followingId: id
             }
         });
 
-        const following = await Follow.count({
+        const followingCount = await Follow.count({
 
             where: {
                 followerId: id
@@ -54,8 +54,17 @@ const showProfile = async (req, res) => {
         const favoriteCount = await Favorite.count({
 
             where: {
-
                 UserId: user.id
+            }
+        });
+
+        const isFollowing = await Follow.count({
+
+            where: {
+
+                followerId: req.session.user.id,
+
+                followingId: user.id
             }
         });
 
@@ -67,16 +76,18 @@ const showProfile = async (req, res) => {
 
             posts: user.Posts,
 
-            followers: user.Followers,
+            followersCount,
 
-            following: user.Following,
-            
+            followingCount,
+
             postCount,
-            
+
             favoriteCount,
-            
+
+            isFollowing,
+
             loggedUser: req.session.user
-        }); 
+        });
 
     } catch (error) {
 
@@ -134,6 +145,12 @@ const updateProfile = async (req, res) => {
                 id: req.session.user.id
             }
         });
+
+        req.session.user.username = username;
+
+        req.session.user.email = email;
+
+        req.session.user.profile_image = profile_image;
 
         req.session.message = {
 

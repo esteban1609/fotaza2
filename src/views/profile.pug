@@ -31,6 +31,36 @@ block content
           small.text-muted
 
             | Miembro desde #{new Date(profileUser.createdAt).toLocaleDateString()}
+          
+          if loggedUser && loggedUser.id !== profileUser.id
+
+            if isFollowing > 0
+
+              form(
+                action=`/unfollow/${profileUser.id}`
+                method="POST"
+                class="mt-3"
+              )
+
+                button.btn.btn-outline-danger(
+                  type="submit"
+                )
+
+                  | Dejar de seguir
+
+            else
+
+              form(
+                action=`/follow/${profileUser.id}`
+                method="POST"
+                class="mt-3"
+              )
+
+                button.btn.btn-primary(
+                  type="submit"
+                )
+
+                  | Seguir
 
           .row.text-center.mt-4
 
@@ -42,21 +72,15 @@ block content
 
             .col
 
-              h4= followers.length
-
+              h4= followersCount
+             
               p.text-muted Seguidores
 
             .col
 
-              h4= following.length
-
+              h4= followingCount
+              
               p.text-muted Siguiendo
-
-            .col
-
-              h4= favoriteCount
-
-              p.text-muted Favoritos
 
           if loggedUser && loggedUser.id === profileUser.id
 
@@ -67,6 +91,7 @@ block content
               | Editar perfil
 
       h2.mb-4
+        
         | Publicaciones
 
       if posts.length === 0

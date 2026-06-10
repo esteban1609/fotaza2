@@ -18,7 +18,7 @@ const followUser = async (req, res) => {
                 text: "No podés seguirte a vos mismo"
             };
 
-            return res.redirect("/");
+            res.redirect(`/users/${userId}`);
         }
 
         const existingFollow =
@@ -37,7 +37,7 @@ const followUser = async (req, res) => {
                 text: "Ya seguís este usuario"
             };
 
-            return res.redirect("/");
+            res.redirect(`/users/${userId}`);
         }
 
         await Follow.create({
@@ -62,7 +62,7 @@ const followUser = async (req, res) => {
             text: "Ahora sigues a este usuario"
         };
 
-        res.redirect("/");
+        res.redirect(`/users/${userId}`);
 
     } catch (error) {
 
@@ -73,7 +73,7 @@ const followUser = async (req, res) => {
             text: "Error siguiendo usuario"
         };
 
-        return res.redirect("/");
+        res.redirect(`/users/${userId}`);
     }
 };
 
@@ -100,7 +100,7 @@ const unfollowUser = async (req, res) => {
             text: "Has dejado de seguir a este usuario"
         };
 
-        res.redirect("/");
+        res.redirect(`/users/${userId}`);
 
     } catch (error) {
 
@@ -113,7 +113,7 @@ const unfollowUser = async (req, res) => {
             text: "Error dejando de seguir usuario"
         };
 
-        res.redirect("/");
+        res.redirect(`/users/${userId}`);
     }
 };
 
