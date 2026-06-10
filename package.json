@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "db:init": "node database/db-init.js"
+    "db:init": "node database/db-init.js",
+    "seed": "node seeders/index.js"
   },
   "keywords": [],
   "author": "",
