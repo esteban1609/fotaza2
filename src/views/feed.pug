@@ -60,18 +60,18 @@ block content
 
                 = post.createdAt.toLocaleDateString()
             
-          .dropdown
+          if currentUser.id === post.UserId
 
-            button.btn.btn-sm.btn-light(
-              type="button"
-              data-bs-toggle="dropdown"
-            )
+            .dropdown
 
-              i.bi.bi-three-dots-vertical
+              button.btn.btn-sm.btn-light(
+                type="button"
+                data-bs-toggle="dropdown"
+              )
 
-            ul.dropdown-menu.dropdown-menu-end
+                i.bi.bi-three-dots-vertical
 
-              if currentUser.id === post.UserId
+              ul.dropdown-menu.dropdown-menu-end
 
                 li
 
@@ -99,16 +99,15 @@ block content
                       else
 
                         | Abrir comentarios
+                //- else
 
-              else
+                //-   li
 
-                li
+                //-     a.dropdown-item.text-danger(
+                //-       href=`/reports/create/${post.id}`
+                //-     )
 
-                  a.dropdown-item.text-danger(
-                    href=`/reports/create/${post.id}`
-                  )
-
-                    | Denunciar
+                //-       | Denunciar 
 
         h2.card-title.mb-2
 
