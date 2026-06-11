@@ -79,10 +79,6 @@ El proyecto fue desarrollado utilizando Node.js, Express, Sequelize, PostgreSQL 
 * Marcar publicaciones con "Me interesa".
 * Visualización de interesados por parte del autor.
 
-### Denuncias
-
-* Funcionalidad en desarrollo.
-
 ### Búsqueda
 
 * Búsqueda de publicaciones.
