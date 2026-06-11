@@ -244,6 +244,14 @@ const showFollowingPosts = async (req, res) => {
             }
         });
 
+        const collections = await Collection.findAll({
+
+            where: {
+
+                UserId: req.session.user.id
+            }
+        });
+
         res.render("feed", {
 
             posts,
@@ -252,7 +260,9 @@ const showFollowingPosts = async (req, res) => {
 
             follows,
 
-            favorites
+            favorites,
+
+            collections
         });
 
     } catch (error) {

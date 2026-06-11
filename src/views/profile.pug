@@ -84,11 +84,19 @@ block content
 
           if loggedUser && loggedUser.id === profileUser.id
 
-            a.btn.btn-outline-primary.mt-3(
-              href="/profile/edit"
-            )
+            .d-flex.justify-content-center.gap-2.mt-3
 
-              | Editar perfil
+              a.btn.btn-outline-primary(
+                href="/profile/edit"
+              )
+
+                | Editar perfil
+
+              a.btn.btn-outline-secondary(
+                href="/dashboard"
+              )
+
+                | Mis publicaciones
 
       h2.mb-4
         
