@@ -8,9 +8,21 @@ const createCollection = async (req, res) => {
 
     try {
 
+        const { name } = req.body;
+
+        if (!name || !name.trim()) {
+
+            req.session.message = {
+                type: "warning",
+                text: "Debes ingresar un nombre para la colección"
+            };
+
+            return res.redirect("/collections");
+        }
+
         await Collection.create({
 
-            name: req.body.name,
+            name,
 
             UserId: req.session.user.id
         });
@@ -89,10 +101,39 @@ const showCollection = async (req, res) => {
     }
 };
 
+const deleteCollection = async (req, res) => {
+
+    try {
+
+        await Collection.destroy({
+
+            where: {
+                id: req.params.id,
+                UserId: req.session.user.id
+            }
+        });
+
+        req.session.message = {
+            type: "success",
+            text: "Colección eliminada"
+        };
+
+        res.redirect("/collections");
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.redirect("/collections");
+    }
+};
+
 module.exports ={
     createCollection,
 
     showCollections,
 
-    showCollection
+    showCollection,
+
+    deleteCollection
 }

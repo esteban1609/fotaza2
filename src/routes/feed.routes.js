@@ -10,6 +10,7 @@ const {
     showFollowingPosts
 } = require("../controllers/feed.controller");
 
+router.get("/", isAuthenticated, feed);
 router.get("/",isAuthenticated,
 feed);
 

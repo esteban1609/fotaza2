@@ -8,7 +8,9 @@ const {
 
     showCollections,
 
-    showCollection
+    showCollection,
+
+    deleteCollection
 
 } = require("../controllers/collection.controller");
 
@@ -25,6 +27,11 @@ router.post(
 router.get(
     "/collections/:id",
     showCollection
+);
+
+router.post(
+    "/collections/delete/:id",
+    deleteCollection
 );
 
 module.exports = router;
