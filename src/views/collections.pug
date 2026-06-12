@@ -54,3 +54,14 @@ block content
               p.text-muted.mb-0
 
                 | #{collection.Favorites.length} publicaciones
+              
+              form(
+                action=`/collections/delete/${collection.id}`
+                method="POST"
+              )
+
+                button.btn.btn-sm.btn-danger(
+                  type="submit"
+                )
+
+                  | Eliminar
