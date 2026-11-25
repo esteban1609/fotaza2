@@ -1,37 +1,22 @@
-const express = require("express");
 
+const express = require("express");
 const router = express.Router();
 
 const {
-
     createCollection,
-
     showCollections,
-
     showCollection,
-
     deleteCollection
-
 } = require("../controllers/collection.controller");
 
-router.get(
-    "/collections",
-    showCollections
-);
+const { isAuthenticated } = require("../middlewares/auth.middleware");
 
-router.post(
-    "/collections/create",
-    createCollection
-);
+router.get("/collections", isAuthenticated, showCollections);
 
-router.get(
-    "/collections/:id",
-    showCollection
-);
+router.post("/collections/create", isAuthenticated, createCollection);
 
-router.post(
-    "/collections/delete/:id",
-    deleteCollection
-);
+router.get("/collections/:id", isAuthenticated, showCollection);
+
+router.post("/collections/delete/:id", isAuthenticated, deleteCollection);
 
 module.exports = router;

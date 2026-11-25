@@ -9,6 +9,7 @@ const {
     login,
     logout
 } = require("../controllers/auth.controller");
+const { isAuthenticated } = require("../middlewares/auth.middleware");
 
 router.get("/register", showRegister);
 
@@ -18,6 +19,6 @@ router.post("/register", register);
 
 router.post("/login", login);
 
-router.get("/logout", logout);
+router.get("/logout", isAuthenticated, logout);
 
 module.exports = router;

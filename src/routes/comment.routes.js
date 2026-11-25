@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 const {
-    createComment
+    createComment,
+    deleteComment
 } = require("../controllers/comment.controller");
 
 const {
@@ -14,6 +15,12 @@ router.post(
     "/comments/create/:postId",
     isAuthenticated,
     createComment
+);
+
+router.post(
+    "/comments/delete/:id",
+    isAuthenticated,
+    deleteComment
 );
 
 module.exports = router;

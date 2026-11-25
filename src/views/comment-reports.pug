@@ -1,0 +1,58 @@
+
+extends layout
+
+block content
+
+  h1.mb-4 Denuncias de comentarios
+
+  if reports.length === 0
+
+    .alert.alert-info
+      | No tenés denuncias pendientes sobre los comentarios de tus publicaciones.
+
+  else
+
+    each report in reports
+
+      .card.mb-3.shadow-sm
+
+        .card-body
+
+          h5.card-title
+            | Comentario denunciado
+
+          p.mb-2
+            strong Publicación:
+            |  #{report.Comment.Post.title}
+
+          p.mb-2
+            strong Comentario:
+            |  #{report.Comment.content}
+
+          p.mb-2
+            strong Denunciado por:
+            |  #{report.User.username}
+
+          p.mb-2
+            strong Motivo:
+            |  #{report.reason}
+
+          p.mb-3
+            strong Justificación:
+            |  #{report.description}
+
+          small.text-muted
+            | Fecha: #{report.createdAt.toLocaleString()}
+
+          form(
+            action=`/comments/delete/${report.Comment.id}`
+            method="POST"
+            class="mt-3"
+          )
+
+            button.btn.btn-danger(
+              type="submit"
+              onclick="return confirm('¿Eliminar este comentario?')"
+            )
+              i.bi.bi-trash.me-1
+              | Eliminar comentario

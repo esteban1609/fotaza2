@@ -18,9 +18,8 @@ router.post(
 );
 
 router.post(
-
     "/unfollow/:userId",
-
+    isAuthenticated,
     unfollowUser
 );
 

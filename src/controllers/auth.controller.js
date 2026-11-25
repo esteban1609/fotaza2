@@ -123,15 +123,12 @@ return res.redirect("/register");
                     }
 
         req.session.user = {
-
-            id: user.id,
-
-            username: user.username,
-
-            email: user.email,
-
-            profile_image: user.profile_image
-        };
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        profile_image: user.profile_image,
+        role: user.role
+    };
 
         res.redirect("/");
 

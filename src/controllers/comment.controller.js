@@ -53,6 +53,41 @@ const createComment = async (req, res) => {
     }
 };
 
+const deleteComment = async (req, res) => {
+    try {
+        const comment = await Comment.findByPk(req.params.id);
+
+        if (!comment) {
+            return res.redirect("/");
+        }
+
+        const post = await Post.findByPk(comment.PostId);
+
+        const isCommentOwner =
+            comment.UserId === req.session.user.id;
+
+        const isPostOwner =
+            post && post.UserId === req.session.user.id;
+
+        if (!isCommentOwner && !isPostOwner) {
+            return res.redirect("/");
+        }
+
+        await comment.destroy();
+
+        req.session.message = {
+            type: "success",
+            text: "Comentario eliminado correctamente"
+        };
+
+        return res.redirect("/");
+
+    } catch (error) {
+        console.error(error);
+        return res.redirect("/");
+    }
+};
 module.exports = {
-    createComment
+    createComment,
+    deleteComment
 };

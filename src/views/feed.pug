@@ -80,6 +80,12 @@ block content
                   )
 
                     | Ver interesados
+                
+                li
+                  a.dropdown-item(
+                    href=`/comments/reports/${post.id}`
+                  )
+                    | Ver denuncias de comentarios
 
                 li
 
@@ -228,6 +234,7 @@ block content
 
         h3 Comentarios
 
+        
         each comment in post.Comments
 
           .d-flex.align-items-center.mb-2
@@ -244,6 +251,52 @@ block content
 
             span.ms-2
               = comment.content
+
+            if currentUser && currentUser.id === comment.UserId
+
+              form(
+                action=`/comments/delete/${comment.id}`
+                method="POST"
+                class="ms-2"
+              )
+                button.btn.btn-sm.btn-outline-danger(
+                  type="submit"
+                  onclick="return confirm('¿Eliminar este comentario?')"
+                )
+                  i.bi.bi-trash
+
+            else if currentUser
+
+              details.ms-2
+                summary.text-danger(style="cursor:pointer")
+                  i.bi.bi-flag
+
+                form.mt-2(
+                  action=`/comments/report/${comment.id}`
+                  method="POST"
+                )
+
+                  select.form-select.form-select-sm.mb-2(
+                    name="reason"
+                    required
+                  )
+                    option(value="" disabled selected) Motivo de denuncia
+                    option(value="Spam") Spam
+                    option(value="Contenido ofensivo") Contenido ofensivo
+                    option(value="Acoso") Acoso
+                    option(value="Contenido inapropiado") Contenido inapropiado
+                    option(value="Otro") Otro
+
+                  textarea.form-control.form-control-sm.mb-2(
+                    name="description"
+                    placeholder="Explicá el motivo de la denuncia"
+                    rows="2"
+                    required
+                  )
+
+                  button.btn.btn-sm.btn-danger(type="submit")
+                    | Enviar denuncia
+
 
         if post.commentsEnabled
           

@@ -31,22 +31,25 @@ router.post(
 
 router.get(
     "/posts/edit/:id",
+    isAuthenticated,
     showEditPost
 );
 
 router.post(
     "/posts/edit/:id",
+    isAuthenticated,
     updatePost
 );
 
 router.post(
     "/posts/delete/:id",
+    isAuthenticated,
     deletePost
 );
 
 router.post(
     "/posts/toggle-comments/:id",
+    isAuthenticated,
     toggleComments
 );
-
 module.exports = router;
