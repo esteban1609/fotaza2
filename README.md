@@ -180,6 +180,37 @@ Contraseña:
 12345678
 ```
 
+## Usuarios de prueba (Render)
+
+Para facilitar la evaluación y las pruebas de la aplicación desplegada en Render, se incluyen los siguientes usuarios de prueba:
+
+### Usuario
+
+Email:
+
+```txt
+usuario@fotaza.com
+```
+
+Contraseña:
+
+```txt
+12345678
+```
+
+### Fotógrafo
+
+Email:
+
+```txt
+fotografo@fotaza.com
+```
+
+Contraseña:
+
+```txt
+12345678
+```
 ---
 
 ## Estructura del proyecto
@@ -308,6 +339,10 @@ Durante las pruebas en diferentes equipos se detectaron dependencias que no se e
 ### Diseño de interfaz
 
 Se realizaron mejoras progresivas sobre el feed principal, perfil de usuario y barra de navegación con el objetivo de mejorar la experiencia de uso y la organización visual de la información.
+
+### Despliegue y conexión a PostgreSQL
+
+Durante el despliegue de la aplicación en Render surgieron inconvenientes relacionados con la conexión a la base de datos PostgreSQL alojada en Neon. Fue necesario configurar correctamente las variables de entorno y habilitar conexiones SSL para el entorno de producción. También se realizaron ajustes para compatibilizar la configuración entre el entorno local y el entorno desplegado, evitando errores de conexión al iniciar la aplicación.
 
 ---
 
