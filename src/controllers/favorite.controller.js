@@ -11,7 +11,7 @@ const addFavorite = async (req, res) => {
 
         const { postId } = req.params;
 
-        const { CollectionId } = req.body;
+        
 
         const existingFavorite = await Favorite.findOne({
 
@@ -39,9 +39,8 @@ const addFavorite = async (req, res) => {
 
             UserId: req.session.user.id,
 
-            PostId: postId,
-
-            CollectionId
+            PostId: postId
+            
         });
 
         req.session.message = {

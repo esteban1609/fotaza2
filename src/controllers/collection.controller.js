@@ -1,7 +1,5 @@
 const Collection = require("../models/Collection");
-
-const Favorite = require("../models/Favorite");
-
+const CollectionPost = require("../models/CollectionPost");
 const Post = require("../models/Post");
 
 const createCollection = async (req, res) => {
@@ -45,59 +43,110 @@ const createCollection = async (req, res) => {
 };
 
 const showCollections = async (req, res) => {
-
-    const collections = await Collection.findAll({
-
-        where: {
-
-            UserId: req.session.user.id
-        },
-
-        include: [
-
-            Favorite
-        ]
-    });
-
-    res.render("collections", {
-
-        collections
-    });
-};
-
-const showCollection = async (req, res) => {
-
     try {
-
-        const { id } = req.params;
-
-        const collection = await Collection.findByPk(id);
-
-        const favorites = await Favorite.findAll({
-
+        const collections = await Collection.findAll({
             where: {
-
-                CollectionId: id
+                UserId: req.session.user.id
             },
-
             include: [
-
-                Post
+                {
+                    model: CollectionPost,
+                    include: [Post]
+                }
             ]
         });
 
-        res.render("collection-detail", {
-
-            collection,
-
-            favorites
+        res.render("collections", {
+            collections
         });
 
     } catch (error) {
-
         console.error(error);
+        res.redirect("/");
+    }
+};
 
+const showCollection = async (req, res) => {
+    try {
+        const collection = await Collection.findOne({
+            where: {
+                id: req.params.id,
+                UserId: req.session.user.id
+            },
+            include: [
+                {
+                    model: CollectionPost,
+                    include: [Post]
+                }
+            ]
+        });
+
+        if (!collection) {
+            return res.redirect("/collections");
+        }
+
+        res.render("collection-detail", {
+            collection
+        });
+
+    } catch (error) {
+        console.error(error);
         res.redirect("/collections");
+    }
+};
+
+const addPostToCollection = async (req, res) => {
+    try {
+        const { collectionId, postId } = req.body;
+
+        const collection = await Collection.findOne({
+            where: {
+                id: collectionId,
+                UserId: req.session.user.id
+            }
+        });
+
+        if (!collection) {
+            return res.redirect("/");
+        }
+
+        const post = await Post.findByPk(postId);
+
+        if (!post) {
+            return res.redirect("/");
+        }
+
+        const existing = await CollectionPost.findOne({
+            where: {
+                CollectionId: collectionId,
+                PostId: postId
+            }
+        });
+
+        if (existing) {
+            req.session.message = {
+                type: "warning",
+                text: "Esta publicación ya está en esa colección"
+            };
+
+            return res.redirect("/");
+        }
+
+        await CollectionPost.create({
+            CollectionId: collectionId,
+            PostId: postId
+        });
+
+        req.session.message = {
+            type: "success",
+            text: "Publicación agregada a la colección"
+        };
+
+        res.redirect("/");
+
+    } catch (error) {
+        console.error(error);
+        res.redirect("/");
     }
 };
 
@@ -128,6 +177,43 @@ const deleteCollection = async (req, res) => {
     }
 };
 
+const removePostFromCollection = async (req, res) => {
+    try {
+        const { collectionId, postId } = req.params;
+
+        // Verificar que la colección pertenezca al usuario
+        const collection = await Collection.findOne({
+            where: {
+                id: collectionId,
+                UserId: req.session.user.id
+            }
+        });
+
+        if (!collection) {
+            return res.redirect("/collections");
+        }
+
+        // Eliminar solamente la relación entre publicación y colección
+        await CollectionPost.destroy({
+            where: {
+                CollectionId: collectionId,
+                PostId: postId
+            }
+        });
+
+        req.session.message = {
+            type: "success",
+            text: "Publicación eliminada de la colección"
+        };
+
+        res.redirect(`/collections/${collectionId}`);
+
+    } catch (error) {
+        console.error(error);
+        res.redirect("/collections");
+    }
+};
+
 module.exports ={
     createCollection,
 
@@ -135,5 +221,9 @@ module.exports ={
 
     showCollection,
 
-    deleteCollection
+    deleteCollection,
+
+    addPostToCollection,
+
+    removePostFromCollection
 }

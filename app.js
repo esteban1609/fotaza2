@@ -35,6 +35,7 @@ require("./src/models/Notification");
 require("./src/models/Report");
 require("./src/models/Interest");
 require("./src/models/Collection");
+require("./src/models/CollectionPost");
 
 const sessionStore = new SequelizeStore({
     db: sequelize

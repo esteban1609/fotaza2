@@ -189,25 +189,50 @@ block content
         form(
           action=`/favorites/${post.id}`
           method="POST"
+          class="d-inline"
         )
 
-          select.form-select.mb-2(
-            name="CollectionId"
+          if isFavorite
+
+            button.btn.btn-danger(
+              type="submit"
+              formaction=`/favorites/remove/${post.id}`
+              title="Quitar de favoritos"
+            )
+
+              i.bi.bi-heart-fill
+
+          else
+
+            button.btn.btn-outline-danger(
+              type="submit"
+              title="Agregar a favoritos"
+            )
+
+              i.bi.bi-heart
+
+        form(
+          action="/collections/add"
+          method="POST"
+        )
+          input(
+            type="hidden"
+            name="postId"
+            value=post.id
           )
 
+          select.form-select.mb-2(
+            name="collectionId"
+            required
+          )
             each collection in collections
-
-              option(
-                value=collection.id
-              )
-
+              option(value=collection.id)
                 = collection.name
 
           button.btn.btn-outline-dark(
             type="submit"
           )
-
-            | Guardar  
+            | Guardar 
         
         form(
           action=`/interest/${post.id}`

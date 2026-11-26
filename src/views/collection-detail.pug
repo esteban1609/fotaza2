@@ -5,33 +5,42 @@ block content
   h1.mb-4
     = collection.name
 
-  if favorites.length === 0
+  if collection.CollectionPosts.length === 0
 
     .alert.alert-secondary
-
       | Esta colección está vacía
 
   else
 
     .row
 
-      each favorite in favorites
+      each item in collection.CollectionPosts
 
         .col-md-6.col-lg-4.mb-4
 
           .card.shadow-sm.h-100
 
             img.card-img-top(
-              src=favorite.Post.image
+              src=item.Post.image
               style="height: 220px; object-fit: cover;"
             )
 
             .card-body
 
               h5.card-title
-
-                = favorite.Post.title
+                = item.Post.title
 
               p.card-text.text-muted
+                = item.Post.description
 
-                = favorite.Post.description
+            form(
+              action=`/collections/${collection.id}/remove/${item.Post.id}`
+              method="POST"
+              class="mt-3"
+            )
+              button.btn.btn-sm.btn-outline-danger(
+                type="submit"
+                onclick="return confirm('¿Quitar esta publicación de la colección?')"
+              )
+                i.bi.bi-trash
+                |  Quitar de colección    
