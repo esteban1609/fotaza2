@@ -48,6 +48,14 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow-sm
             i.bi.bi-heart-fill.me-1
 
             | Favoritos
+        
+        li.nav-item
+
+          a.nav-link(href="/messages")
+
+            i.bi.bi-chat-dots-fill.me-1
+
+            | Mensajes
 
         li.nav-item
 
@@ -57,22 +65,83 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow-sm
 
             | Siguiendo
 
-      form.d-flex.me-3(
-        action="/search"
-        method="GET"
-      )
+      .d-flex.align-items-center.me-3
 
-        input.form-control.me-2(
-          type="search"
-          name="q"
-          placeholder="Buscar publicaciones"
+        form.d-flex.me-2(
+          action="/search"
+          method="GET"
         )
+          input.form-control.me-2(
+            type="search"
+            name="q"
+            placeholder="Búsqueda general"
+          )
 
-        button.btn.btn-outline-light(
-          type="submit"
-        )
+          button.btn.btn-outline-light(
+            type="submit"
+          )
+            i.bi.bi-search
 
-          i.bi.bi-search
+        .dropdown
+
+          button.btn.btn-outline-light(
+            type="button"
+            id="filterDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            title="Filtros avanzados"
+          )
+            i.bi.bi-sliders
+
+          .dropdown-menu.dropdown-menu-end.p-3(
+            aria-labelledby="filterDropdown"
+            style="width: 300px;"
+          )
+
+            form(
+              action="/search"
+              method="GET"
+            )
+
+              h6.mb-3 Filtros avanzados
+
+              label.form-label Título
+              input.form-control.mb-2(
+                type="text"
+                name="title"
+                placeholder="Título"
+              )
+
+              label.form-label Descripción
+              input.form-control.mb-2(
+                type="text"
+                name="description"
+                placeholder="Descripción"
+              )
+
+              label.form-label Usuario
+              input.form-control.mb-2(
+                type="text"
+                name="username"
+                placeholder="Autor"
+              )
+
+              label.form-label Etiqueta
+              input.form-control.mb-2(
+                type="text"
+                name="tag"
+                placeholder="Etiqueta"
+              )
+
+              label.form-label Licencia
+
+              select.form-select.mb-3(name="copyright")
+                option(value="") Todas
+                option(value="true") Con copyright
+                option(value="false") Sin copyright
+
+              button.btn.btn-primary.w-100(type="submit")
+                | Aplicar filtros
 
       button#theme-toggle.btn.btn-outline-light.me-3
 

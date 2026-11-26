@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  .container.mt-4
+    .d-flex.justify-content-between.align-items-center.mb-3
+      h2 Conversación con #{otherUser.username}
+      a.btn.btn-outline-secondary(href="/messages") Volver a mensajes
+
+    .card
+      .card-body
+        if messages.length === 0
+          p.text-muted Todavía no hay mensajes. ¡Iniciá la conversación!
+        else
+          each message in messages
+            .d-flex.mb-3(
+              class=message.senderId === currentUser.id ? "justify-content-end" : "justify-content-start"
+            )
+              .p-3.rounded(
+                class=message.senderId === currentUser.id ? "bg-primary text-white" : "bg-light"
+                style="max-width: 75%;"
+              )
+                p.mb-1= message.content
+                small= message.createdAt.toLocaleString()
+
+        hr
+
+        form(action=`/messages/${otherUser.id}` method="POST")
+          .mb-3
+            textarea.form-control(
+              name="content"
+              rows="3"
+              placeholder="Escribí tu mensaje..."
+              required
+            )
+          button.btn.btn-primary(type="submit") Enviar mensaje

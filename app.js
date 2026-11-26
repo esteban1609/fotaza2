@@ -19,6 +19,7 @@ const notificationRoutes = require("./src/routes/notification.routes");
 const reportRoutes = require("./src/routes/report.routes");
 const interestRoutes = require("./src/routes/interest.routes");
 const collectionRoutes = require("./src/routes/collection.routes");
+const messageRoutes = require("./src/routes/message.routes");
 
 // Modelo utilizado para el contador de notificaciones
 const Notification = require("./src/models/Notification");
@@ -36,6 +37,7 @@ require("./src/models/Report");
 require("./src/models/Interest");
 require("./src/models/Collection");
 require("./src/models/CollectionPost");
+require("./src/models/Message");
 
 const sessionStore = new SequelizeStore({
     db: sequelize
@@ -119,6 +121,7 @@ app.use("/", reportRoutes);
 app.use("/", interestRoutes);
 app.use("/", collectionRoutes);
 app.use("/", userRoutes);
+app.use("/", messageRoutes);
 
 // Inicialización de la base de datos y del servidor
 sequelize.sync()

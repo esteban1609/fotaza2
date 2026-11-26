@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  .container.mt-4
+    h2.mb-4 Mensajes
+
+    if conversations.length === 0
+      .alert.alert-secondary
+        | Todavía no tenés conversaciones.
+    else
+      .list-group
+        each conversation in conversations
+          a.list-group-item.list-group-item-action(
+            href=`/messages/${conversation.user.id}`
+          )
+            .d-flex.justify-content-between.align-items-center
+              strong= conversation.user.username
+              small.text-muted= conversation.lastMessage.createdAt.toLocaleString()
+            p.mb-0.text-muted.mt-2= conversation.lastMessage.content

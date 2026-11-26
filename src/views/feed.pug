@@ -234,17 +234,23 @@ block content
           )
             | Guardar 
         
-        form(
-          action=`/interest/${post.id}`
-          method="POST"
-          class="mt-2"
-        )
+        - const hasInterest = post.Interests.some(interest => interest.UserId === currentUser.id)
 
-          button.btn.btn-info(
-            type="submit"
-          )
-
-            |  Me interesa
+        if post.UserId !== currentUser.id
+          if hasInterest
+            a.btn.btn-primary.btn-sm.mt-2(
+              href=`/messages/${post.UserId}`
+            )
+              i.bi.bi-chat-dots.me-1
+              | Enviar mensaje al autor
+          else
+            form(
+              action=`/interest/${post.id}`
+              method="POST"
+              class="mt-2"
+            )
+              button.btn.btn-info(type="submit")
+                | Me interesa
         
 
         .image-container.mt-3.mb-3

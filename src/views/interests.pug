@@ -8,7 +8,6 @@ block content
   if interests.length === 0
 
     .alert.alert-secondary
-
       | Nadie marcó interés todavía
 
   else
@@ -17,6 +16,10 @@ block content
 
       .card.mb-2
 
-        .card-body
+        .card-body.d-flex.justify-content-between.align-items-center
 
-          = interest.User.username
+          strong= interest.User.username
+
+          a.btn.btn-primary.btn-sm(
+            href=`/messages/${interest.User.id}`
+          ) Enviar mensaje
