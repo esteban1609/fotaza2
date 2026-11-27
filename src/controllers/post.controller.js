@@ -1,4 +1,6 @@
 const Post = require("../models/Post");
+const Report = require("../models/Report");
+const User = require("../models/User");
 
 const showCreatePost = (req, res) => {
 
@@ -85,6 +87,22 @@ const showEditPost = async (req, res) => {
             return res.redirect("/");
         }
 
+        const report = await Report.findOne({
+            where: {
+                PostId: id
+            }
+        });
+
+        if (report) {
+            req.session.message = {
+                type: "warning",
+                text: "No podés modificar una publicación que tiene denuncias"
+            };
+
+            return res.redirect("/");
+        }
+
+        
         res.render("edit-post", {
             post
         });
@@ -132,6 +150,21 @@ const updatePost = async (req, res) => {
             return res.redirect("/");
         }
 
+        const report = await Report.findOne({
+            where: {
+                PostId: id
+            }
+        });
+
+        if (report) {
+            req.session.message = {
+                type: "warning",
+                text: "No podés modificar una publicación que tiene denuncias"
+            };
+
+            return res.redirect("/");
+        }
+
         await post.update({
 
             title,
@@ -154,6 +187,8 @@ const updatePost = async (req, res) => {
     }
 };
 
+
+
 const deletePost = async (req, res) => {
 
     try {
@@ -162,17 +197,20 @@ const deletePost = async (req, res) => {
 
         const post = await Post.findByPk(id);
 
-        if (!post) {
+        if (!post || post.deleted) {
 
             req.session.message = {
                 type: "warning",
-                text: "Post no encontrado"
+                text: "Publicación no encontrada"
             };
 
             return res.redirect("/");
         }
 
-        if (post.UserId !== req.session.user.id) {
+        const isOwner = post.UserId === req.session.user.id;
+        const isAdmin = req.session.user.role === "admin";
+
+        if (!isOwner && !isAdmin) {
 
             req.session.message = {
                 type: "danger",
@@ -182,9 +220,41 @@ const deletePost = async (req, res) => {
             return res.redirect("/");
         }
 
-        await post.destroy();
+        await post.update({
+            deleted: true
+        });
 
-        res.redirect("/dashboard");
+        // Contabilizar únicamente las bajas realizadas por el validador
+        if (isAdmin && !isOwner) {
+
+            const owner = await User.findByPk(post.UserId);
+
+            if (owner) {
+
+                const newCount = owner.removedPostsCount + 1;
+
+                await owner.update({
+                    removedPostsCount: newCount,
+                    active: newCount >= 3 ? false : owner.active
+                });
+
+                if (newCount >= 3) {
+                    req.session.message = {
+                        type: "warning",
+                        text: "Publicación eliminada. El autor alcanzó 3 bajas y su cuenta fue desactivada."
+                    };
+                }
+            }
+        }
+
+        if (!req.session.message) {
+            req.session.message = {
+                type: "success",
+                text: "Publicación dada de baja correctamente"
+            };
+        }
+
+        return res.redirect(isAdmin ? "/reports" : "/dashboard");
 
     } catch (error) {
 
@@ -192,12 +262,13 @@ const deletePost = async (req, res) => {
 
         req.session.message = {
             type: "danger",
-            text: "Error eliminando publicación"
+            text: "Error dando de baja la publicación"
         };
 
         return res.redirect("/");
     }
 };
+
 
 const toggleComments = async (req, res) => {
 

@@ -60,60 +60,56 @@ block content
 
                 = post.createdAt.toLocaleDateString()
             
-          if currentUser.id === post.UserId
-
+          if currentUser && currentUser.id === post.UserId
+            
             .dropdown
-
               button.btn.btn-sm.btn-light(
                 type="button"
                 data-bs-toggle="dropdown"
               )
-
                 i.bi.bi-three-dots-vertical
 
               ul.dropdown-menu.dropdown-menu-end
-
                 li
-
-                  a.dropdown-item(
-                    href=`/posts/${post.id}/interests`
-                  )
-
+                  a.dropdown-item(href=`/posts/${post.id}/interests`)
                     | Ver interesados
-                
+
                 li
-                  a.dropdown-item(
-                    href=`/comments/reports/${post.id}`
-                  )
+                  a.dropdown-item(href=`/comments/reports/${post.id}`)
                     | Ver denuncias de comentarios
 
                 li
-
-                  form(
-                    action=`/posts/toggle-comments/${post.id}`
-                    method="POST"
-                  )
-
-                    button.dropdown-item(
-                      type="submit"
-                    )
-
+                  form(action=`/posts/toggle-comments/${post.id}` method="POST")
+                    button.dropdown-item(type="submit")
                       if post.commentsEnabled
-
                         | Cerrar comentarios
-
                       else
-
                         | Abrir comentarios
-                //- else
 
-                //-   li
+          else
+            details.mt-2
+              summary.text-danger(style="cursor:pointer")
+                i.bi.bi-flag.me-1
+                | Denunciar publicación
 
-                //-     a.dropdown-item.text-danger(
-                //-       href=`/reports/create/${post.id}`
-                //-     )
+              form.mt-2(action=`/reports/${post.id}` method="POST")
+                select.form-select.mb-2(name="reason" required)
+                  option(value="" disabled selected) Motivo de denuncia
+                  option(value="Copyright") Copyright
+                  option(value="Contenido inapropiado") Contenido inapropiado
+                  option(value="Spam") Spam
+                  option(value="Contenido ofensivo") Contenido ofensivo
+                  option(value="Otro") Otro
 
-                //-       | Denunciar 
+                textarea.form-control.mb-2(
+                  name="description"
+                  placeholder="Explicá el motivo de la denuncia"
+                  rows="2"
+                  required
+                )
+
+                button.btn.btn-danger.btn-sm(type="submit")
+                  | Enviar denuncia
 
         h2.card-title.mb-2
 
@@ -133,46 +129,28 @@ block content
 
                 | ##{tag.trim()}
 
+       
         if post.copyright
-
           p.text-danger.mb-2
-
             | © Copyright protegido
-
         else
-
           p.text-success.mb-2
-
             | Libre de copyright
 
-        - let average = 0
+       
+        p.fw-bold.mb-2
+          | Valoración:
 
-        if post.Ratings.length > 0
-
-          - let total = 0
-
-          each rating in post.Ratings
-            - total += rating.value
-
-          - average = (total / post.Ratings.length).toFixed(1)
-
-        - const roundedAverage = Math.round(average)
-
-         p.fw-bold.mb-2
-
-          | Valoración: 
-
-          each star in [1,2,3,4,5]
-
-            if star <= roundedAverage
-
+          each star in [1, 2, 3, 4, 5]
+            if star <= post.get("roundedAverage")
               span.text-warning ⭐
-
             else
-
               span.text-secondary ☆
 
-          |  (#{average})
+          |  (#{post.get("averageRating")})
+
+
+
 
         .d-flex.gap-4.mb-3.mt-3
 
@@ -234,9 +212,9 @@ block content
           )
             | Guardar 
         
-        - const hasInterest = post.Interests.some(interest => interest.UserId === currentUser.id)
+        - const hasInterest = currentUser && post.Interests.some(interest => interest.UserId === currentUser.id)
 
-        if post.UserId !== currentUser.id
+        if currentUser && post.UserId !== currentUser.id
           if hasInterest
             a.btn.btn-primary.btn-sm.mt-2(
               href=`/messages/${post.UserId}`

@@ -1,9 +1,7 @@
+
 const User = require("../models/User");
-
 const Post = require("../models/Post");
-
 const Follow = require("../models/Follow");
-
 const Favorite = require("../models/Favorite");
 
 const showProfile = async (req, res) => {
@@ -16,7 +14,11 @@ const showProfile = async (req, res) => {
 
             include: [
                 {
-                    model: Post
+                    model: Post,
+                    where: {
+                        deleted: false
+                    },
+                    required: false
                 },
                 {
                     association: "Followers"
@@ -61,9 +63,7 @@ const showProfile = async (req, res) => {
         const isFollowing = await Follow.count({
 
             where: {
-
                 followerId: req.session.user.id,
-
                 followingId: user.id
             }
         });
@@ -73,19 +73,12 @@ const showProfile = async (req, res) => {
         res.render("profile", {
 
             profileUser: user,
-
             posts: user.Posts,
-
             followersCount,
-
             followingCount,
-
             postCount,
-
             favoriteCount,
-
             isFollowing,
-
             loggedUser: req.session.user
         });
 
@@ -121,41 +114,30 @@ const updateProfile = async (req, res) => {
     try {
 
         const {
-
             username,
-
             email,
-
             profile_image
-
         } = req.body;
 
         await User.update({
 
             username,
-
             email,
-
             profile_image
 
         }, {
 
             where: {
-
                 id: req.session.user.id
             }
         });
 
         req.session.user.username = username;
-
         req.session.user.email = email;
-
         req.session.user.profile_image = profile_image;
 
         req.session.message = {
-
             type: "success",
-
             text: "Perfil actualizado correctamente"
         };
 
@@ -166,9 +148,7 @@ const updateProfile = async (req, res) => {
         console.error(error);
 
         req.session.message = {
-
             type: "danger",
-
             text: "Error actualizando perfil"
         };
 

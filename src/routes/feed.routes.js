@@ -10,7 +10,7 @@ const {
     showFollowingPosts
 } = require("../controllers/feed.controller");
 
-router.get("/", isAuthenticated, feed);
+router.get("/", feed);
 
 router.get(
     "/search",
@@ -19,6 +19,7 @@ router.get(
 
 router.get(
     "/following-posts",
+    isAuthenticated,
     showFollowingPosts
 );
 module.exports = router;

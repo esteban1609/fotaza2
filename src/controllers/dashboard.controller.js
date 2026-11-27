@@ -1,3 +1,4 @@
+
 const Post = require("../models/Post");
 
 const dashboard = async (req, res) => {
@@ -7,7 +8,8 @@ const dashboard = async (req, res) => {
         const posts = await Post.findAll({
 
             where: {
-                UserId: req.session.user.id
+                UserId: req.session.user.id,
+                deleted: false
             }
         });
 

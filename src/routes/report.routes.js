@@ -4,7 +4,8 @@ const router = express.Router();
 
 const {
     createReport,
-    showReports
+    showReports,
+    dismissReports
 } = require("../controllers/report.controller");
 
 const {
@@ -25,5 +26,10 @@ router.get(
     isAdmin,
     showReports
 );
+
+router.post(
+    "/reports/:postId/dismiss",
+     isAdmin,
+     dismissReports);
 
 module.exports = router;

@@ -1,3 +1,4 @@
+
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Comment = require("../models/Comment");
@@ -8,11 +9,52 @@ const Favorite = require("../models/Favorite");
 const Interest = require("../models/Interest");
 const Collection = require("../models/Collection");
 
+// Calcular el promedio de valoraciones de cada publicación
+const calculateRatings = (posts) => {
+
+    for (const post of posts) {
+
+        const ratings = post.Ratings || [];
+
+
+        let average = 0;
+
+        if (ratings.length > 0) {
+
+            const total = ratings.reduce(
+                (sum, rating) => sum + Number(rating.value),
+                0
+            );
+
+            average = total / ratings.length;
+        }
+
+        post.setDataValue(
+            "averageRating",
+            average.toFixed(1)
+        );
+
+        post.setDataValue(
+            "roundedAverage",
+            Math.round(average)
+        );
+    }
+
+    return posts;
+};
+
 const feed = async (req, res) => {
 
     try {
 
-        const posts = await Post.findAll({
+        const currentUser = req.session.user;
+
+        let posts = await Post.findAll({
+
+            where: {
+                deleted: false,
+                ...(!currentUser && { copyright: false })
+            },
 
             include: [
                 User,
@@ -33,37 +75,37 @@ const feed = async (req, res) => {
             ]
         });
 
-        const follows = await Follow.findAll({
+        posts = calculateRatings(posts);
 
-            where: {
-                followerId: req.session.user.id
-            }
-        });
+        const follows = currentUser
+            ? await Follow.findAll({
+                where: {
+                    followerId: currentUser.id
+                }
+            })
+            : [];
 
-        const favorites = await Favorite.findAll({
+        const favorites = currentUser
+            ? await Favorite.findAll({
+                where: {
+                    UserId: currentUser.id
+                }
+            })
+            : [];
 
-            where: {
-                UserId: req.session.user.id
-            }
-        });
-
-        const collections = await Collection.findAll({
-
-            where: {
-
-                UserId: req.session.user.id
-            }
-        });
+        const collections = currentUser
+            ? await Collection.findAll({
+                where: {
+                    UserId: currentUser.id
+                }
+            })
+            : [];
 
         res.render("feed", {
             posts,
-            
-            currentUser: req.session.user,
-            
+            currentUser,
             follows,
-            
             favorites,
-
             collections
         });
 
@@ -81,12 +123,15 @@ const feed = async (req, res) => {
 };
 
 const searchPosts = async (req, res) => {
+
     try {
+
         const { q, title, description, username, tag, copyright } = req.query;
+
+        const currentUser = req.session.user;
 
         const filtros = [];
 
-        // Búsqueda general
         if (q && q.trim()) {
             filtros.push({
                 [Op.or]: [
@@ -98,45 +143,45 @@ const searchPosts = async (req, res) => {
             });
         }
 
-        // Filtro por título
         if (title && title.trim()) {
             filtros.push({
                 title: { [Op.iLike]: `%${title}%` }
             });
         }
 
-        // Filtro por descripción
         if (description && description.trim()) {
             filtros.push({
                 description: { [Op.iLike]: `%${description}%` }
             });
         }
 
-        // Filtro por usuario
         if (username && username.trim()) {
             filtros.push({
                 "$User.username$": { [Op.iLike]: `%${username}%` }
             });
         }
 
-        // Filtro por etiqueta
         if (tag && tag.trim()) {
             filtros.push({
                 tags: { [Op.iLike]: `%${tag}%` }
             });
         }
 
-        // Filtro por licencia
         if (copyright === "true" || copyright === "false") {
             filtros.push({
                 copyright: copyright === "true"
             });
         }
 
-        const posts = await Post.findAll({
-            where: filtros.length > 0
-                ? { [Op.and]: filtros }
-                : {},
+        let posts = await Post.findAll({
+
+            where: {
+                [Op.and]: [
+                    { deleted: false },
+                    ...(!currentUser && [{ copyright: false }]),
+                    ...filtros
+                ]
+            },
 
             include: [
                 { model: User },
@@ -151,33 +196,42 @@ const searchPosts = async (req, res) => {
             order: [["createdAt", "DESC"]]
         });
 
-        const follows = await Follow.findAll({
-            where: {
-                followerId: req.session.user.id
-            }
-        });
+        posts = calculateRatings(posts);
 
-        const favorites = await Favorite.findAll({
-            where: {
-                UserId: req.session.user.id
-            }
-        });
+       const follows = currentUser
+            ? await Follow.findAll({
+                where: {
+                    followerId: currentUser.id
+                }
+            })
+            : [];
 
-        const collections = await Collection.findAll({
-            where: {
-                UserId: req.session.user.id
-            }
-        });
+        const favorites = currentUser
+            ? await Favorite.findAll({
+                where: {
+                    UserId: currentUser.id
+                }
+            })
+            : [];
+
+        const collections = currentUser
+            ? await Collection.findAll({
+                where: {
+                    UserId: currentUser.id
+                }
+            })
+            : [];
 
         res.render("feed", {
             posts,
-            currentUser: req.session.user,
+            currentUser,
             follows,
             favorites,
             collections
         });
 
     } catch (error) {
+
         console.error(error);
 
         req.session.message = {
@@ -196,51 +250,45 @@ const showFollowingPosts = async (req, res) => {
         const follows = await Follow.findAll({
 
             where: {
-
                 followerId: req.session.user.id
             }
         });
 
         const followingIds = follows.map(
-
             follow => follow.followingId
         );
 
-        const posts = await Post.findAll({
+        let posts = await Post.findAll({
 
             where: {
-
-                UserId: followingIds
+                UserId: followingIds,
+                deleted: false
             },
 
             include: [
-
                 User,
-
                 {
                     model: Comment,
                     include: User
                 },
-
                 {
                     model: Rating
                 },
-
                 {
                     model: Interest
                 }
             ],
 
             order: [
-
                 ["createdAt", "DESC"]
             ]
         });
 
+        posts = calculateRatings(posts);
+
         const favorites = await Favorite.findAll({
 
             where: {
-
                 UserId: req.session.user.id
             }
         });
@@ -248,7 +296,6 @@ const showFollowingPosts = async (req, res) => {
         const collections = await Collection.findAll({
 
             where: {
-
                 UserId: req.session.user.id
             }
         });
@@ -256,13 +303,9 @@ const showFollowingPosts = async (req, res) => {
         res.render("feed", {
 
             posts,
-
             currentUser: req.session.user,
-
             follows,
-
             favorites,
-
             collections
         });
 
@@ -273,8 +316,6 @@ const showFollowingPosts = async (req, res) => {
         res.redirect("/");
     }
 };
-
-
 
 module.exports = {
     feed,

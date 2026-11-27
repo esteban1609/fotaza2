@@ -36,6 +36,12 @@ const User = sequelize.define("User", {
         defaultValue: true
     },
 
+    removedPostsCount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false
+    },
+
     profile_image: {
 
     type: DataTypes.TEXT,

@@ -43,7 +43,13 @@ const Post = sequelize.define("Post", {
         type: DataTypes.BOOLEAN,
 
         defaultValue: false
-    }
+    },
+    
+    deleted: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
+}
 
 }, {
     tableName: "posts",

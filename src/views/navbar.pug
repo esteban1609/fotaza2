@@ -65,6 +65,16 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow-sm
 
             | Siguiendo
 
+      if currentUser && currentUser.role === "admin"
+
+        li.nav-item
+
+          a.nav-link.text-warning(href="/reports")
+
+            i.bi.bi-flag-fill.me-1
+
+            | Denuncias
+
       .d-flex.align-items-center.me-3
 
         form.d-flex.me-2(

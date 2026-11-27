@@ -94,18 +94,16 @@ const login = async (req, res) => {
         const { email, password } = req.body;
 
         const user = await User.findOne({
-            where: {
-                email
-            }
+            where: { email }
         });
 
         if (!user) {
             req.session.message = {
                 type: "danger",
-                text: "El usuario ya existe"
+                text: "El usuario no existe"
             };
 
-return res.redirect("/register");
+            return res.redirect("/login");
         }
 
         const validPassword = await bcrypt.compare(
@@ -114,30 +112,46 @@ return res.redirect("/register");
         );
 
         if (!validPassword) {
-           req.session.message = {
+            req.session.message = {
                 type: "danger",
                 text: "Contraseña incorrecta"
             };
 
             return res.redirect("/login");
-                    }
+        }
+
+        // Comprobar si la cuenta está activa
+        if (!user.active) {
+            req.session.message = {
+                type: "danger",
+                text: "Tu cuenta está inactiva y no podés iniciar sesión"
+            };
+
+            return res.redirect("/login");
+        }
 
         req.session.user = {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        profile_image: user.profile_image,
-        role: user.role
-    };
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            profile_image: user.profile_image,
+            role: user.role
+        };
 
-        res.redirect("/");
+        return res.redirect("/");
 
     } catch (error) {
         console.error(error);
 
-        res.send("Error en login");
+        req.session.message = {
+            type: "danger",
+            text: "Error al iniciar sesión"
+        };
+
+        return res.redirect("/login");
     }
 };
+
 const logout = (req, res) => {
 
     req.session.destroy(() => {

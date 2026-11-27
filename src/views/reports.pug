@@ -1,34 +1,50 @@
+
 extends layout
 
 block content
+  h1.mb-4 Cola de revisión
 
-  h1.mb-4 Denuncias
-
-  if reports.length === 0
-
+  if reportedPosts.length === 0
     .alert.alert-success
+      | No hay publicaciones pendientes de revisión.
 
-      | No hay denuncias
-
-  each report in reports
-
-    .card.mb-3
-
+  each group in reportedPosts
+    .card.mb-4
       .card-body
+        h4.mb-2= group.post.title
 
-        h5
-          = report.reason
+        p.text-muted
+          | Publicado por: #{group.post.User.username}
 
         p
-          = report.description
+          strong Usuarios que denunciaron:
+          |  #{group.reporterCount}
 
-        p.text-muted
+        hr
 
-          | Usuario: #{report.User.username}
+        h5 Denuncias recibidas
 
-        p.text-muted
+        each report in group.reports
+          .border.rounded.p-3.mb-2
+            p.mb-1
+              strong Motivo:
+              |  #{report.reason}
+            p.mb-1
+              strong Descripción:
+              |  #{report.description}
+            p.text-muted.mb-0
+              | Denunciado por: #{report.User.username}
 
-          | Publicación: #{report.Post.title}
+        .d-flex.gap-2.mt-3
+          form(action=`/posts/delete/${group.post.id}` method="POST")
+            button.btn.btn-danger(
+              type="submit"
+              onclick="return confirm('¿Estás seguro de dar de baja esta publicación?')"
+            )
+              i.bi.bi-trash.me-1
+              | Dar de baja publicación
 
-        
-        
+          form(action=`/reports/${group.post.id}/dismiss` method="POST")
+            button.btn.btn-secondary(type="submit")
+              i.bi.bi-x-circle.me-1
+              | Desestimar denuncias
